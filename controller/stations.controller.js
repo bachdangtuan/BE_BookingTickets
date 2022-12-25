@@ -1,5 +1,5 @@
 const {Stations} = require('../models')
-
+const {Op} = require('sequelize')
 
 // Hàm tạo Bến Xe
 const createStation = async (req, res) => {
@@ -14,11 +14,24 @@ const createStation = async (req, res) => {
         res.status(500).send(err)
     }
 }
-// Hàm lấy danh sách bến xe
+// Hàm lấy danh sách bến xe (search)
 const getAllStation = async (req, res) => {
+    const {name} = req.query
     try {
-        const stationList = await Stations.findAll()
-        res.status(200).send(stationList)
+        if (!name) {
+            const stationList = await Stations.findAll()
+            res.status(200).send(stationList)
+        } else {
+            const stationList = await Stations.findAll({
+                where: {
+                    name: {
+                        [Op.like]: `%${name}%`
+                    }
+                },
+            })
+            res.status(200).send(stationList)
+        }
+
     } catch (err) {
         res.status(500).send(err)
     }

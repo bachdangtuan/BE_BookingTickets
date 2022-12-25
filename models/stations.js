@@ -19,8 +19,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             type: DataTypes.STRING,
         },
-        address: DataTypes.STRING,
-        province: DataTypes.STRING
+        address: {
+            allowNull: false,
+            type: DataTypes.STRING,
+        },
+        province: {
+            allowNull: false,
+            type: DataTypes.STRING,
+        },
     }, {
         sequelize,
         modelName: 'Stations',

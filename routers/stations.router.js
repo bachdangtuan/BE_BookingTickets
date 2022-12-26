@@ -1,4 +1,7 @@
 const express = require('express')
+
+const {checkExist} = require('../middleware/middleware')
+
 const {
     createStation,
     getAllStation,
@@ -12,9 +15,9 @@ const stationsRouter = express.Router();
 // setup Router API
 stationsRouter.post("/", createStation);
 stationsRouter.get("/", getAllStation);
-stationsRouter.get("/:id", getDetailStation);
-stationsRouter.put("/:id", updateDetailStation);
-stationsRouter.delete("/:id", deleteDetailStation);
+stationsRouter.get("/:id", checkExist, getDetailStation);
+stationsRouter.put("/:id", checkExist, updateDetailStation);
+stationsRouter.delete("/:id", checkExist, deleteDetailStation);
 
 
 // export modules router

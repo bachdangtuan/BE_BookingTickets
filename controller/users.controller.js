@@ -41,7 +41,7 @@ const loginUser = async (req, res) => {
             })
         } else {
             return res.status(400).send({
-                message: "Tài khoản mật khẩu không đúng"
+                message: "Tài khoản mật khẩu không đúng !"
             })
         }
     } else {

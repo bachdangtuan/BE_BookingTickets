@@ -5,14 +5,14 @@ const bcrypt = require('bcryptjs')
 // Hàm tạo user
 const createUser = async (req, res) => {
     // console.log('req', req.body)
-    const {name, email, password, numberPhone} = req.body
+    const {name, email, password, username, numberPhone} = req.body
     try {
         // tạo ra chuỗi ngẫu nhiên
         const salt = bcrypt.genSaltSync(15)
         // mã hóa chuỗi
         const hashPass = bcrypt.hashSync(password, salt)
         const newStations = await Users.create({
-            name, email, password: hashPass, numberPhone
+            name, email, password: hashPass, numberPhone, username
         })
         res.status(201).send(newStations)
     } catch (err) {
@@ -23,17 +23,17 @@ const createUser = async (req, res) => {
 // Hàm login
 
 const loginUser = async (req, res) => {
-    const {email, password} = req.body
+    const {username, password} = req.body
     // tìm user tồn tại
     const user = await Users.findOne({
-        where: {email}
+        where: {username}
     })
     if (user) {
         const isAuth = bcrypt.compareSync(password, user.password)
         if (isAuth) {
-            const accessToken = jwt.sign({email:user.email, type:user.type}, "12345678",{
-                expiresIn: 60*60
-            } );
+            const accessToken = jwt.sign({username: user.username, type: user.type}, "12345678", {
+                expiresIn: 60 * 60
+            });
             res.status(200).send({
                 user,
                 accessToken,

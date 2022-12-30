@@ -6,12 +6,12 @@ const authenticate = (req, res, next) => {
 
     if (accessToken) {
         const decode = jwt.verify(accessToken, '12345678')
-        console.log(decode)
         if (!decode) {
             return res.status(401).send({
                 message: 'Bạn cần phải đăng nhập'
             })
         } else {
+            req.user = decode
             return next();
         }
     } else {

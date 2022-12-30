@@ -52,7 +52,6 @@ const loginUser = async (req, res) => {
     // kiểm tra mật khẩu
 }
 
-
 // Hàm lấy dữ liệu
 const getAllUser = async (req, res) => {
     try {
@@ -76,6 +75,9 @@ const getUserDetail = async (req, res) => {
         res.status(500).send(err)
     }
 }
+
+// Hàm upload avatar
+
 
 
 module.exports = {

@@ -24,6 +24,12 @@ module.exports = {
             numberPhone: {
                 type: Sequelize.STRING
             },
+            avatar: {
+                type: Sequelize.STRING
+            },
+            sex: {
+                type: Sequelize.STRING
+            },
             type: {
                 type: Sequelize.STRING,
                 defaultValue: "client"

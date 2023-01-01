@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const authenticate = (req, res, next) => {
     const accessToken = req.header("token");
 
+    console.log('accessToken',accessToken)
     if (accessToken) {
         const decode = jwt.verify(accessToken, '12345678')
         if (!decode) {
@@ -16,7 +17,7 @@ const authenticate = (req, res, next) => {
         }
     } else {
         res.status(404).send({
-            message: 'Not found',
+            message: 'Ban chua dang nhap',
         })
     }
 }

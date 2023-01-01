@@ -77,9 +77,23 @@ const getUserDetail = async (req, res) => {
 }
 
 // Hàm upload avatar
+const uploadAvatar = async (req, res) => {
+    const {firebaseUrl} = req.file
+    const {user} = req
 
+    // tìm kiếm User trong bảng DB
+    const userFound = await Users.findOne({
+        username: user.username
+    })
+    userFound.avatar = firebaseUrl
+    await userFound.save()
+
+    res.send(userFound)
+
+
+}
 
 
 module.exports = {
-    createUser, getAllUser, getUserDetail, loginUser
+    createUser, getAllUser, getUserDetail, loginUser, uploadAvatar
 }

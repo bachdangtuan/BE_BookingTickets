@@ -16,7 +16,7 @@ const stationsRouter = express.Router();
 
 
 // setup Router API
-stationsRouter.post("/",  authenticate, authorize, createStation);
+stationsRouter.post("/",  createStation);
 stationsRouter.get("/", getAllStation);
 stationsRouter.get("/:id", checkExist, getDetailStation);
 stationsRouter.put("/:id", checkExist, updateDetailStation);

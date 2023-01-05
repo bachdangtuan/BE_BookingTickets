@@ -1,7 +1,7 @@
 const express = require('express');
 const {checkExistUser} = require('../middleware/middleware')
 const {createUser, getAllUser, getUserDetail, loginUser, uploadAvatar} = require("../controller/users.controller");
-const {authenticate} = require("../middleware/authenticate/authenticate");
+const {authenticate, authorize} = require("../middleware/authenticate/authenticate");
 const {uploadSingleImageDiskStore, uploadSaveStoreCloud, checkFileUploadType} = require("../middleware/upload/upload");
 
 

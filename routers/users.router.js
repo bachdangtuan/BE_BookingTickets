@@ -11,7 +11,7 @@ UsersRouter.get("/:id", checkExistUser, getUserDetail)
 UsersRouter.post("/register", createUser);
 UsersRouter.post("/login", loginUser);
 UsersRouter.post("/upload-avatar", authenticate, checkFileUploadType(), uploadSaveStoreCloud, uploadAvatar);
-UsersRouter.get("/", authenticate, getAllUser);
+UsersRouter.get("/", getAllUser);
 
 module.exports = {
     UsersRouter

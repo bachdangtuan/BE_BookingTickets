@@ -12,13 +12,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      trip_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'trips',
-          key: "id",
-        }
-      },
       image: {
         type: Sequelize.STRING
       },

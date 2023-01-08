@@ -1,4 +1,4 @@
-const {Trips, Stations} = require('../models')
+const {Trips, Stations, Users, Ticket, passengerCarCompanies, Vehicles} = require('../models')
 
 const createTrip = async (req, res) => {
     const {fromStation, toStation, startTime, price} = req.body
@@ -21,13 +21,28 @@ const getAllTrip = async (req, res) => {
             include: [
                 {
                     model: Stations,
-                    as: "from"
+                    as: "from",
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
                 },
                 {
                     model: Stations,
-                    as: "to"
-                }
-            ]
+                    as: "to",
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
+                },
+                {
+                    model: passengerCarCompanies,
+                    as: "company",
+                    through: {attributes: []},
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
+                },
+                {
+                    model: Users,
+                    as: 'user',
+                    through: {attributes: []},
+                    attributes: {exclude: ['createdAt', 'updatedAt', 'password']}
+                },
+            ],
+            attributes: {exclude: ['fromStation', 'toStation', 'createdAt', 'updatedAt']}
         }
     )
     res.status(200).send({
@@ -35,6 +50,50 @@ const getAllTrip = async (req, res) => {
         listTrips
     })
 }
+// Hàm xe chi tiết một chuyến đi
+const getTripsDetail = async (req, res) => {
+    const {id} = req.params
+    try {
+        // tìm trong DB có id không
+        const trip = await Trips.findOne({
+            attributes: {exclude: ['fromStation', 'toStation', 'createdAt', 'updatedAt']},
+            include: [
+                {
+                    model: Stations,
+                    as: "from",
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
+                },
+                {
+                    model: Stations,
+                    as: "to",
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
+                },
+                {
+                    model: passengerCarCompanies,
+                    as: "company",
+                    through: {attributes: []},
+                    attributes: {exclude: ['createdAt', 'updatedAt']},
+                    include: [
+                        {
+                            model: Vehicles,
+                            as: "vehicle",
+                        }
+                    ]
+                },
+                {
+                    model: Users,
+                    as: 'user',
+                    through: {attributes: []},
+                    attributes: {exclude: ['createdAt', 'updatedAt', 'password']}
+                },
+            ],
 
+            where: {id}
+        })
+        res.status(200).send(trip)
+    } catch (err) {
+        res.status(500).send(err)
+    }
+}
 
-module.exports = {createTrip, getAllTrip}
+module.exports = {createTrip, getAllTrip, getTripsDetail}

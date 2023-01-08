@@ -11,50 +11,52 @@ module.exports = {
          *   name: 'John Doe',
          *   isBetaMember: false
          * }], {});
+         *
          */
-        await queryInterface.bulkInsert('stations', [
+        await queryInterface.bulkInsert('Tickets', [
             {
-                name: "Ben xe viet nam",
-                address: "My dinh viet nam",
-                province: "HCM",
+                trip_id: 4,
+                user_id: 1,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                name: "Ben xe Da Nag",
-                address: "My dinh viet nam",
-                province: "DN",
+                trip_id: 3,
+                user_id: 1,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                name: "Ben xe 2",
-                address: "My dinh viet nam",
-                province: "HCM",
+                trip_id: 2,
+                user_id: 3,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                name: "Ben xe 3",
-                address: "My dinh viet nam",
-                province: "DN",
+                trip_id: 1,
+                user_id: 3,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                name: "Ben xe 4",
-                address: "My dinh viet nam",
-                province: "HCM",
+                trip_id: 2,
+                user_id: 5,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                name: "Ben xe 5",
-                address: "My dinh viet nam",
-                province: "DN",
+                trip_id: 2,
+                user_id: 3,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
+            {
+                trip_id: 2,
+                user_id: 4,
+                createdAt: "2022-12-26 07:06:14",
+                updatedAt: "2022-12-28 07:06:16"
+            },
+
         ], {});
     },
 
@@ -65,6 +67,5 @@ module.exports = {
          * Example:
          * await queryInterface.bulkDelete('People', null, {});
          */
-        await queryInterface.bulkDelete('stations', null, {});
     }
 };

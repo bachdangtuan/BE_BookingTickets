@@ -1,4 +1,4 @@
-const {passengerCarCompanies, Trips} = require('../models')
+const {passengerCarCompanies, Trips, Vehicles} = require('../models')
 
 // TẠO NHÀ XE
 const createCompany = async (req, res) => {
@@ -24,7 +24,7 @@ const getAllCompanies = async (req, res) => {
         include: [
             {
                 model: Trips,
-                as: "lo_trinh"
+                as: "trip"
             },
         ]
     })

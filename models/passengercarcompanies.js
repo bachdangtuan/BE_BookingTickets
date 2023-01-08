@@ -10,10 +10,10 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         // KẾT NỐI BẢNG
-        static associate({Trips,Vehicle}) {
+        static associate({Trips, Vehicles}) {
             // define association here
-            this.belongsTo(Trips, {foreignKey: 'trip_id', as: 'lo_trinh'});
-            this.hasMany(Vehicle, {foreignKey: 'passengerCarCompanies_id'})
+            this.belongsToMany(Trips, {through: 'Route', foreignKey: 'company_id', as: 'trip'})
+            this.belongsToMany(Vehicles, {through: 'ParkVehicle', foreignKey: 'company_id', as: 'vehicle'})
         }
     }
 

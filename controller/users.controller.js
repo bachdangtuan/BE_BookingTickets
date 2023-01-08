@@ -1,7 +1,7 @@
 const {Users} = require("../models/");
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-
+const {Trips, Stations, Ticket} = require('../models')
 // Hàm tạo user
 const createUser = async (req, res) => {
     // console.log('req', req.body)
@@ -55,7 +55,31 @@ const loginUser = async (req, res) => {
 // Hàm lấy dữ liệu
 const getAllUser = async (req, res) => {
     try {
-        const newUser = await Users.findAll()
+        const newUser = await Users.findAll(
+            {
+                include: [
+                    {
+                        model: Trips,
+                        as: 'trip',
+                        through: {attributes: []},
+                        attributes: {exclude: ['createdAt', 'updatedAt', 'fromStation', 'toStation']},
+                        include: [
+                            {
+                                model: Stations,
+                                as: "from",
+                                attributes: {exclude: ['createdAt', 'updatedAt']},
+                            },
+                            {
+                                model: Stations,
+                                as: "to",
+                                attributes: {exclude: ['createdAt', 'updatedAt']},
+                            },
+                        ]
+                    },
+                ],
+                attributes: {exclude: ['createdAt', 'updatedAt', 'password']}
+            }
+        )
         res.status(201).send(newUser)
     } catch (err) {
         res.status(500).send(err)
@@ -68,7 +92,27 @@ const getUserDetail = async (req, res) => {
     try {
         // tìm trong DB có id không
         const user = await Users.findOne({
-            where: {id}
+            where: {id},
+            include: [
+                {
+                    model: Trips,
+                    as: 'trip',
+                    through: {attributes: []},
+                    attributes: {exclude: ['createdAt', 'updatedAt', 'fromStation', 'toStation']},
+                    include: [
+                        {
+                            model: Stations,
+                            as: "from",
+                            attributes: {exclude: ['createdAt', 'updatedAt']},
+                        },
+                        {
+                            model: Stations,
+                            as: "to",
+                            attributes: {exclude: ['createdAt', 'updatedAt']},
+                        },
+                    ]
+                },
+            ],
         })
         res.status(200).send(user)
     } catch (err) {

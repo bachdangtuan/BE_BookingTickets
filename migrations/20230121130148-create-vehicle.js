@@ -30,6 +30,9 @@ module.exports = {
             description: {
                 type: Sequelize.STRING
             },
+            numberRegister: {
+                type: Sequelize.STRING
+            },
             images: {
                 type: Sequelize.STRING
             },

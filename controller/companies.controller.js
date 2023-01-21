@@ -1,4 +1,4 @@
-const {passengerCarCompanies, Trips, Vehicles, Stations} = require('../models')
+const {passengerCarCompanies, Trips, Vehicles, Stations, Users} = require('../models')
 
 // TẠO NHÀ XE
 const createCompany = async (req, res) => {
@@ -56,7 +56,25 @@ const getDetailCompanies = async (req, res) => {
                     model: Trips,
                     as: "trip",
                     through: {attributes: []},
-                    attributes: {exclude: ['createdAt', 'updatedAt']}
+                    attributes: {exclude: ['createdAt', 'updatedAt', 'fromStation', 'toStation']},
+                    include: [
+                        {
+                            model: Stations,
+                            as: "from",
+                            attributes: {exclude: ['createdAt', 'updatedAt']}
+                        },
+                        {
+                            model: Stations,
+                            as: "to",
+                            attributes: {exclude: ['createdAt', 'updatedAt']}
+                        },
+                        {
+                            model: Users,
+                            as: 'user',
+                            through: {attributes: []},
+                            attributes: {exclude: ['createdAt', 'updatedAt', 'password']}
+                        },
+                    ]
                 },
                 {
                     model: Vehicles,
@@ -64,7 +82,6 @@ const getDetailCompanies = async (req, res) => {
                     through: {attributes: []},
                     attributes: {exclude: ['createdAt', 'updatedAt']}
                 },
-
             ]
         })
         res.status(200).send(detailCompanies)

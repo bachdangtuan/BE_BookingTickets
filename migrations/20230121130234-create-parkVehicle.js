@@ -1,33 +1,34 @@
 'use strict';
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Trips', {
+        /**
+         * Add altering commands here.
+         *
+         * Example:
+         * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
+         */
+        await queryInterface.createTable('ParkVehicle', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            startTime: {
-                type: Sequelize.DATE
-            },
-            fromStation: {
+            vehicle_id: {
                 type: Sequelize.INTEGER,
                 references: {
-                    model: 'stations',
+                    model: 'Vehicles',
                     key: "id",
                 }
             },
-            toStation: {
+            company_id: {
                 type: Sequelize.INTEGER,
                 references: {
-                    model: 'stations',
+                    model: 'passengerCarCompanies',
                     key: "id",
                 }
-            },
-            price: {
-                type: Sequelize.FLOAT
             },
             createdAt: {
                 allowNull: false,
@@ -37,9 +38,16 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE
             }
+
         });
     },
+
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Trips');
+        /**
+         * Add reverting commands here.
+         *
+         * Example:
+         */
+        await queryInterface.dropTable('ParkVehicle');
     }
 };

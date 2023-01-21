@@ -7,6 +7,10 @@ module.exports = {
          * Add seed commands here.
          *
          * Example:
+         * await queryInterface.bulkInsert('People', [{
+         *   name: 'John Doe',
+         *   isBetaMember: false
+         * }], {});
          */
         await queryInterface.bulkInsert('ParkVehicle', [
             {
@@ -33,5 +37,6 @@ module.exports = {
          * Example:
          * await queryInterface.bulkDelete('People', null, {});
          */
+        await queryInterface.bulkDelete('ParkVehicle', null, {});
     }
 };

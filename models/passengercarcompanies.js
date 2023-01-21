@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     passengerCarCompanies.init({
         name: DataTypes.STRING,
         image: DataTypes.STRING,
+        address: DataTypes.STRING,
+        email: DataTypes.STRING,
+        phone: DataTypes.STRING,
+        status: DataTypes.BOOLEAN,
         description: DataTypes.STRING
     }, {
         sequelize,

@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         password: DataTypes.STRING,
         numberPhone: DataTypes.STRING || DataTypes.NUMBER_TYPE,
         avatar: DataTypes.STRING,
-        sex: DataTypes.STRING,
         type: {
             type: DataTypes.STRING,
             default: 'client'

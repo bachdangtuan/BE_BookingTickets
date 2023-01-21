@@ -8,31 +8,31 @@ module.exports = {
          *
          * Example:
          */
-        await queryInterface.bulkInsert('passengerCarCompanies', [
+        await queryInterface.bulkInsert('users', [
+
             {
-                name: 'Nhà Xe Con Mèo',
-                image:'hinh anh 1',
-                description:'Nhà xe chở những con mèo béo',
+                name: 'Bach Dang Tuan',
+                username: 'admin',
+                email: 'tksjkdfg@gmail.com',
+                password: '123456',
+                numberPhone: '',
+                type: 'admin',
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                name: 'Nhà Xe Angular',
-                image:'hinh anh 1',
-                description:'Nhà xe chở những con mèo béo',
-                createdAt: "2022-12-26 07:06:14",
-                updatedAt: "2022-12-28 07:06:16"
-            },
-            {
-                name: 'Nhà Xe VueJS',
-                image:'hinh anh 1',
-                description:'Nhà xe chở những con mèo béo',
+                name: 'John Doe',
+                username: 'dangtuan',
+                email: 'tksjkdfg@gmail.com',
+                password: '123456',
+                numberPhone: '',
+                type: 'admin',
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             }
+
+
         ], {});
-
-
     },
 
     async down(queryInterface, Sequelize) {
@@ -42,5 +42,6 @@ module.exports = {
          * Example:
          * await queryInterface.bulkDelete('People', null, {});
          */
+        await queryInterface.bulkDelete('users', null, {});
     }
 };

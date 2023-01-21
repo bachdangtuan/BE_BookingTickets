@@ -1,4 +1,4 @@
-const {passengerCarCompanies, Trips, Vehicles} = require('../models')
+const {passengerCarCompanies, Trips, Vehicles, Stations} = require('../models')
 
 // TẠO NHÀ XE
 const createCompany = async (req, res) => {
@@ -20,20 +20,60 @@ const createCompany = async (req, res) => {
 
 // LẤY DANH SÁCH NHÀ XE
 const getAllCompanies = async (req, res) => {
-    const listCompanies = await passengerCarCompanies.findAll({
-        include: [
-            {
-                model: Trips,
-                as: "trip"
-            },
-        ]
-    })
-    res.status(200).send({
-        message: 'Lấy thành công',
-        listCompanies
-    })
+    try {
+        let limit = parseInt(req.query.limit)
+        let page = parseInt(req.query.page)
+        let start = (page - 1) * limit;
+        const listCompanies = await passengerCarCompanies.findAndCountAll({
+            include: [
+                {
+                    model: Trips,
+                    as: "trip"
+                },
+            ],
+            limit: limit,
+            offset: start,
+        })
+        res.status(200).send({
+            thisPage: page,
+            limit: limit,
+            data: listCompanies.rows,
+            totalItems: listCompanies.count,
+            message: 'Lấy thành công',
+        })
+    } catch (e) {
+
+    }
 }
 
+const getDetailCompanies = async (req, res) => {
+    try {
+        const {id} = req.params
+        const detailCompanies = await passengerCarCompanies.findOne({
+            where: {id},
+            include: [
+                {
+                    model: Trips,
+                    as: "trip",
+                    through: {attributes: []},
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
+                },
+                {
+                    model: Vehicles,
+                    as: "vehicle",
+                    through: {attributes: []},
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
+                },
+
+            ]
+        })
+        res.status(200).send(detailCompanies)
+
+    } catch (e) {
+        res.status(500).send(e)
+    }
+
+}
 
 const uploadAvatarCompany = (req, res) => {
 
@@ -47,5 +87,6 @@ const uploadAvatarCompany = (req, res) => {
 module.exports = {
     createCompany,
     getAllCompanies,
+    getDetailCompanies,
     uploadAvatarCompany
 }

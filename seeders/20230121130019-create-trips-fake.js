@@ -11,56 +11,55 @@ module.exports = {
          *   name: 'John Doe',
          *   isBetaMember: false
          * }], {});
-         *
          */
-        await queryInterface.bulkInsert('Tickets', [
+        await queryInterface.bulkInsert('Trips', [
             {
-                trip_id: 4,
-                user_id: 1,
+                fromStation: 1,
+                toStation: 3,
+                startTime: '2022-12-26 07:06:14',
+                price: 200,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                trip_id: 3,
-                user_id: 1,
+                fromStation: 1,
+                toStation: 5,
+                startTime: '2022-12-26 07:06:14',
+                price: 200,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                trip_id: 2,
-                user_id: 3,
+                fromStation: 2,
+                toStation: 3,
+                startTime: '2022-12-26 07:06:14',
+                price: 200,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                trip_id: 1,
-                user_id: 3,
+                fromStation: 1,
+                toStation: 4,
+                startTime: '2022-12-26 07:06:14',
+                price: 200,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
             },
             {
-                trip_id: 2,
-                user_id: 5,
+                fromStation: 1,
+                toStation: 4,
+                startTime: '2022-12-26 07:06:14',
+                price: 200,
                 createdAt: "2022-12-26 07:06:14",
                 updatedAt: "2022-12-28 07:06:16"
-            },
-            {
-                trip_id: 2,
-                user_id: 3,
-                createdAt: "2022-12-26 07:06:14",
-                updatedAt: "2022-12-28 07:06:16"
-            },
-            {
-                trip_id: 2,
-                user_id: 4,
-                createdAt: "2022-12-26 07:06:14",
-                updatedAt: "2022-12-28 07:06:16"
-            },
+            }
 
         ], {});
+
     },
 
     async down(queryInterface, Sequelize) {
+        await queryInterface.bulkDelete('Trips', null, {});
         /**
          * Add commands to revert seed here.
          *

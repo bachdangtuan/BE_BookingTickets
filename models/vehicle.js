@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
 
     Vehicles.init({
         name: DataTypes.STRING,
+        numberRegister: DataTypes.STRING,
+        driver: DataTypes.STRING,
+        description: DataTypes.STRING,
+        type: DataTypes.STRING,
+        status: DataTypes.BOOLEAN,
         images: DataTypes.STRING
     }, {
         sequelize,

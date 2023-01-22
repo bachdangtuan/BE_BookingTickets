@@ -123,8 +123,8 @@ const getUserDetail = async (req, res) => {
 // Hàm upload avatar
 const uploadAvatar = async (req, res) => {
     const {firebaseUrl} = req.file
+    console.log('firebaseUrl', firebaseUrl)
     const {user} = req
-
     // tìm kiếm User trong bảng DB
     const userFound = await Users.findOne({
         username: user.username

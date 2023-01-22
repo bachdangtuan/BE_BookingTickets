@@ -39,8 +39,8 @@ const checkFileUploadType = () => {
 
     const upload = multer({
         storage: storage,
-
         fileFilter: (req, file, cb) => {
+            console.log(file)
             const extensionImageList = ['.png', '.jpg']
             const extent = file.originalname.slice(-4);
             const check = extensionImageList.includes(extent);
@@ -50,7 +50,8 @@ const checkFileUploadType = () => {
             } else {
                 cb('error', new Error('anh khong hop le'))
             }
-        }
+        },
+
     });
 
     return upload.single('avatar')

@@ -18,16 +18,22 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     passengerCarCompanies.init({
-        name: DataTypes.STRING,
-        image: DataTypes.STRING,
-        address: DataTypes.STRING,
-        email: DataTypes.STRING,
-        phone: DataTypes.STRING,
-        status: DataTypes.BOOLEAN,
-        description: DataTypes.STRING
-    }, {
-        sequelize,
-        modelName: 'passengerCarCompanies',
-    });
+            name: DataTypes.STRING,
+            image: DataTypes.STRING,
+            address: DataTypes.STRING,
+            email: DataTypes.STRING,
+            phone: DataTypes.STRING,
+            status: {
+                type: DataTypes.BOOLEAN,
+                default: true
+            },
+            description: DataTypes.STRING
+        },
+        {
+            sequelize,
+            modelName: 'passengerCarCompanies',
+        }
+    )
+    ;
     return passengerCarCompanies;
 };

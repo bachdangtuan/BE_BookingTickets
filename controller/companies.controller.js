@@ -2,13 +2,17 @@ const {passengerCarCompanies, Trips, Vehicles, Stations, Users} = require('../mo
 
 // TẠO NHÀ XE
 const createCompany = async (req, res) => {
-    const {name, image, description, trip_id} = req.body
-
+    const {name, image, description, email, phone, address} = req.body
+    const {firebaseUrl} = req.file
+    console.log('firebaseUrl', firebaseUrl)
     const newCompany = await passengerCarCompanies.create({
         name,
-        image,
+        image:firebaseUrl,
+        email,
         description,
-        trip_id
+        phone,
+        address,
+        status: true
     })
 
     res.status(201).send({
@@ -93,9 +97,12 @@ const getDetailCompanies = async (req, res) => {
 }
 
 const uploadAvatarCompany = (req, res) => {
+    const {firebaseUrl} = req.file
+    console.log('firebaseUrl', firebaseUrl)
 
     res.status(200).send({
-        message: 'Thành công'
+        message: 'Thành công',
+        firebaseUrl
     })
 
 }

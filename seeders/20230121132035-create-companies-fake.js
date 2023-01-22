@@ -372,6 +372,160 @@ module.exports = {
                 status: false,
                 updatedAt: "2022-12-28 07:06:16"
             },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
+            {
+                name: 'Nhà xe Huệ Nghĩa',
+                image: 'https://static.vexere.com/production/images/1648100143839.jpeg',
+                description: 'Huệ Nghĩa là hãng xe khách Sài Gòn chuyên cung cấp các dịch vụ vận tải đi nhiều tỉnh thành khác nhau từ TP.HCM.',
+                address: '85 Đường Lý Chiêu Hoàng, Phường 10, Quận 6, TP.HCM',
+                phone: '028 3963 6363',
+                email: 'test1@gmail.com',
+                createdAt: "2022-12-26 07:06:14",
+                status: false,
+                updatedAt: "2022-12-28 07:06:16"
+            },
         ], {});
     },
 

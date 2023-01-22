@@ -18,6 +18,9 @@ module.exports = {
             startTime: {
                 type: Sequelize.DATE
             },
+            status: {
+                type: Sequelize.BOOLEAN
+            },
             fromStation: {
                 type: Sequelize.INTEGER,
                 references: {

@@ -25,14 +25,14 @@ const getAllCompanies = async (req, res) => {
         let page = parseInt(req.query.page)
         let start = (page - 1) * limit;
         const listCompanies = await passengerCarCompanies.findAndCountAll({
+            limit: limit,
+            offset: start,
             include: [
                 {
                     model: Trips,
                     as: "trip"
                 },
             ],
-            limit: limit,
-            offset: start,
         })
         res.status(200).send({
             thisPage: page,

@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     Trips.init({
         startTime: DataTypes.DATE,
         price: DataTypes.FLOAT,
-        status: DataTypes.BOOLEAN
+        status: DataTypes.STRING
     }, {
         sequelize,
         modelName: 'Trips',

@@ -19,7 +19,7 @@ module.exports = {
                 type: Sequelize.DATE
             },
             status: {
-                type: Sequelize.BOOLEAN
+                type: Sequelize.STRING
             },
             fromStation: {
                 type: Sequelize.INTEGER,

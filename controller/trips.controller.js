@@ -7,7 +7,8 @@ const createTrip = async (req, res) => {
         fromStation,
         toStation,
         startTime,
-        price
+        price,
+        status: '1'
     })
 
     res.status(201).send({
@@ -17,38 +18,51 @@ const createTrip = async (req, res) => {
 }
 
 const getAllTrip = async (req, res) => {
-    const listTrips = await Trips.findAll({
-            include: [
-                {
-                    model: Stations,
-                    as: "from",
-                    attributes: {exclude: ['createdAt', 'updatedAt']}
-                },
-                {
-                    model: Stations,
-                    as: "to",
-                    attributes: {exclude: ['createdAt', 'updatedAt']}
-                },
-                {
-                    model: passengerCarCompanies,
-                    as: "company",
-                    through: {attributes: []},
-                    attributes: {exclude: ['createdAt', 'updatedAt']}
-                },
-                {
-                    model: Users,
-                    as: 'user',
-                    through: {attributes: []},
-                    attributes: {exclude: ['createdAt', 'updatedAt', 'password']}
-                },
-            ],
-            attributes: {exclude: ['fromStation', 'toStation', 'createdAt', 'updatedAt']}
-        }
-    )
-    res.status(200).send({
-        message: 'Lấy thành công',
-        listTrips
-    })
+    try {
+        let limit = parseInt(req.query.limit)
+        let page = parseInt(req.query.page)
+        let start = (page - 1) * limit;
+        const listTrips = await Trips.findAndCountAll({
+                limit: limit,
+                offset: start,
+                include: [
+                    {
+                        model: Stations,
+                        as: "from",
+                        attributes: {exclude: ['createdAt', 'updatedAt']}
+                    },
+                    {
+                        model: Stations,
+                        as: "to",
+                        attributes: {exclude: ['createdAt', 'updatedAt']}
+                    },
+                    // {
+                    //     model: passengerCarCompanies,
+                    //     as: "company",
+                    //     through: {attributes: []},
+                    //     attributes: {exclude: ['createdAt', 'updatedAt']}
+                    // },
+                    // {
+                    //     model: Users,
+                    //     as: 'user',
+                    //     through: {attributes: []},
+                    //     attributes: {exclude: ['createdAt', 'updatedAt', 'password']}
+                    // },
+                ],
+                attributes: {exclude: ['fromStation', 'toStation', 'createdAt', 'updatedAt']}
+            }
+        )
+        res.status(200).send({
+            message: 'Lấy thành công',
+            thisPage: page,
+            limit: limit,
+            data: listTrips.rows,
+            totalItems: listTrips.count,
+        })
+    } catch (e) {
+        console.log('e', e)
+    }
+
 }
 // Hàm xe chi tiết một chuyến đi
 const getTripsDetail = async (req, res) => {

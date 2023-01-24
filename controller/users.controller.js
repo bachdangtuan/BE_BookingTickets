@@ -2,6 +2,9 @@ const {Users} = require("../models/");
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const {Trips, Stations, Ticket} = require('../models')
+
+const STATUS = require("../core/constant/status.constant")
+
 // Hàm tạo user
 const createUser = async (req, res) => {
     // console.log('req', req.body)
@@ -14,9 +17,9 @@ const createUser = async (req, res) => {
         const newStations = await Users.create({
             name, email, password: hashPass, numberPhone, username
         })
-        res.status(201).send(newStations)
+        res.status(STATUS.STATUS_201).send(newStations)
     } catch (err) {
-        res.status(500).send(err)
+        res.status(STATUS.STATUS_500).send(err)
     }
 }
 
@@ -33,18 +36,18 @@ const loginUser = async (req, res) => {
             const accessToken = jwt.sign({username: user.username, type: user.type}, "12345678", {
                 expiresIn: 60 * 60
             });
-            res.status(200).send({
+            res.status(STATUS.STATUS_200).send({
                 user,
                 accessToken,
                 message: "Người dùng đăng nhập thành công !"
             })
         } else {
-            return res.status(400).send({
+            return res.status(STATUS.STATUS_400).send({
                 message: "Tài khoản mật khẩu không đúng !"
             })
         }
     } else {
-        return res.status(404).send({
+        return res.status(STATUS.STATUS_404).send({
             message: "Không có tài khoản"
         })
     }
@@ -79,9 +82,9 @@ const getAllUser = async (req, res) => {
                 attributes: {exclude: ['createdAt', 'updatedAt', 'password']}
             }
         )
-        res.status(201).send(newUser)
+        res.status(STATUS.STATUS_201).send(newUser)
     } catch (err) {
-        res.status(500).send(err)
+        res.status(STATUS.STATUS_500).send(err)
     }
 }
 
@@ -113,16 +116,15 @@ const getUserDetail = async (req, res) => {
                 },
             ],
         })
-        res.status(200).send(user)
+        res.status(STATUS.STATUS_200).send(user)
     } catch (err) {
-        res.status(500).send(err)
+        res.status(STATUS.STATUS_500).send(err)
     }
 }
 
 // Hàm upload avatar
 const uploadAvatar = async (req, res) => {
     const {firebaseUrl} = req.file
-    console.log('firebaseUrl', firebaseUrl)
     const {user} = req
     // tìm kiếm User trong bảng DB
     const userFound = await Users.findOne({
@@ -131,7 +133,7 @@ const uploadAvatar = async (req, res) => {
     userFound.avatar = firebaseUrl
     await userFound.save()
 
-    res.send(userFound)
+    res.status(STATUS.STATUS_200).send(userFound)
 
 
 }
@@ -144,19 +146,18 @@ const resetPassword = async (req, res) => {
             where: {email}
         })
         if (user) {
-            res.status(200).send({
+            res.status(STATUS.STATUS_200).send({
                 user,
                 message: 'Thành công'
             })
         } else {
-            res.status(500).send({
+            res.status(STATUS.STATUS_404).send({
                 message: 'Không có user nào với email'
             })
         }
 
     } catch (e) {
-
-        res.status(500).send({
+        res.status(STATUS.STATUS_500).send({
             message: 'Lỗi server'
         })
     }

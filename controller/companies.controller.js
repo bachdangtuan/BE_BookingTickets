@@ -1,5 +1,5 @@
 const {passengerCarCompanies, Trips, Vehicles, Stations, Users} = require('../models')
-
+const STATUS = require("../core/constant/status.constant")
 // TẠO NHÀ XE
 const createCompany = async (req, res) => {
     const {name, image, description, email, phone, address} = req.body
@@ -7,7 +7,7 @@ const createCompany = async (req, res) => {
     console.log('firebaseUrl', firebaseUrl)
     const newCompany = await passengerCarCompanies.create({
         name,
-        image:firebaseUrl,
+        image: firebaseUrl,
         email,
         description,
         phone,
@@ -15,7 +15,7 @@ const createCompany = async (req, res) => {
         status: true
     })
 
-    res.status(201).send({
+    res.status(STATUS.STATUS_201).send({
         message: 'Tạo thành công',
         newCompany
     })
@@ -38,7 +38,7 @@ const getAllCompanies = async (req, res) => {
                 },
             ],
         })
-        res.status(200).send({
+        res.status(STATUS.STATUS_200).send({
             thisPage: page,
             limit: limit,
             data: listCompanies.rows,
@@ -88,10 +88,10 @@ const getDetailCompanies = async (req, res) => {
                 },
             ]
         })
-        res.status(200).send(detailCompanies)
+        res.status(STATUS.STATUS_200).send(detailCompanies)
 
     } catch (e) {
-        res.status(500).send(e)
+        res.status(STATUS.STATUS_500).send(e)
     }
 
 }
@@ -100,7 +100,7 @@ const uploadAvatarCompany = (req, res) => {
     const {firebaseUrl} = req.file
     console.log('firebaseUrl', firebaseUrl)
 
-    res.status(200).send({
+    res.status(STATUS.STATUS_200).send({
         message: 'Thành công',
         firebaseUrl
     })

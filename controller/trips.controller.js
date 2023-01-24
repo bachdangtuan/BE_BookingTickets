@@ -2,9 +2,10 @@ const {Trips, Stations, Users, Ticket, passengerCarCompanies, Vehicles} = requir
 const xlsx = require('xlsx')
 const axios = require('axios');
 const moment = require("moment");
+const sequelize = require("sequelize");
 
 const importTrip = async (req, res) => {
-    /* Logic upload file lên gửi vào trong filebase lấy đường link chạy 1 hàm axios để lấy dữ liệu về đọc file đó */
+    /* Logic upload file lưu vào thư mục public sau đó đọc file và insert vào bảng */
     const xlFile = xlsx.readFile('public/dataExcel.xlsx')
     const sheet = xlFile.Sheets[xlFile.SheetNames[0]]
 
@@ -12,12 +13,6 @@ const importTrip = async (req, res) => {
 
     try {
         for (let i = 0; i < JSON_RAW.length; i++) {
-
-            // function ExcelDateToJSDate(date) {
-            //     return new Date(Math.round((date - 25569)*86400*1000));
-            // }
-            //
-            // console.log('hihi')
             JSON_RAW[i].startTime = new Date(Math.round((JSON_RAW[i].startTime - 25569) * 86400 * 1000))
             await Trips.create({
                     startTime: JSON_RAW[i].startTime,
@@ -57,39 +52,48 @@ const createTrip = async (req, res) => {
 
 const getAllTrip = async (req, res) => {
     try {
-        let limit = parseInt(req.query.limit)
-        let page = parseInt(req.query.page)
-        let start = (page - 1) * limit;
-        const listTrips = await Trips.findAndCountAll({
-                limit: limit,
-                offset: start,
-                include: [
-                    {
-                        model: Stations,
-                        as: "from",
-                        attributes: {exclude: ['createdAt', 'updatedAt']}
-                    },
-                    {
-                        model: Stations,
-                        as: "to",
-                        attributes: {exclude: ['createdAt', 'updatedAt']}
-                    },
-                    // {
-                    //     model: passengerCarCompanies,
-                    //     as: "company",
-                    //     through: {attributes: []},
-                    //     attributes: {exclude: ['createdAt', 'updatedAt']}
-                    // },
-                    // {
-                    //     model: Users,
-                    //     as: 'user',
-                    //     through: {attributes: []},
-                    //     attributes: {exclude: ['createdAt', 'updatedAt', 'password']}
-                    // },
-                ],
-                attributes: {exclude: ['fromStation', 'toStation', 'createdAt', 'updatedAt']}
-            }
-        )
+        const status = parseInt(req.query.status)
+        const limit = parseInt(req.query.limit)
+        const page = parseInt(req.query.page)
+        const start = (page - 1) * limit;
+
+        let optionQueryDB = {
+            limit: limit,
+            offset: start,
+            include: [
+                {
+                    model: Stations,
+                    as: "from",
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
+                },
+                {
+                    model: Stations,
+                    as: "to",
+                    attributes: {exclude: ['createdAt', 'updatedAt']}
+                },
+                // {
+                //     model: passengerCarCompanies,
+                //     as: "company",
+                //     through: {attributes: []},
+                //     attributes: {exclude: ['createdAt', 'updatedAt']}
+                // },
+                {
+                    model: Users,
+                    as: 'user',
+                    through: {attributes: []},
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt', 'password']
+                    }
+                },
+            ],
+            attributes: {exclude: ['fromStation', 'toStation', 'createdAt', 'updatedAt']}
+        }
+        if (req.query.status) {
+            optionQueryDB.where = {status: status}
+        }else{
+
+        }
+        const listTrips = await Trips.findAndCountAll(optionQueryDB)
         res.status(200).send({
             message: 'Lấy thành công',
             thisPage: page,

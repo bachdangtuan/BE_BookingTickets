@@ -21,7 +21,6 @@ const createUser = async (req, res) => {
 }
 
 // Hàm login
-
 const loginUser = async (req, res) => {
     const {username, password} = req.body
     // tìm user tồn tại
@@ -137,7 +136,35 @@ const uploadAvatar = async (req, res) => {
 
 }
 
+// Hàm lấy lại mật khẩu
+const resetPassword = async (req, res) => {
+    const {email} = req.body
+    try {
+        const user = await Users.findOne({
+            where: {email}
+        })
+        if (user) {
+            res.status(200).send({
+                user,
+                message: 'Thành công'
+            })
+        } else {
+            res.status(500).send({
+                message: 'Không có user nào với email'
+            })
+        }
+
+    } catch (e) {
+
+        res.status(500).send({
+            message: 'Lỗi server'
+        })
+    }
+
+
+}
+
 
 module.exports = {
-    createUser, getAllUser, getUserDetail, loginUser, uploadAvatar
+    createUser, getAllUser, getUserDetail, loginUser, uploadAvatar, resetPassword
 }

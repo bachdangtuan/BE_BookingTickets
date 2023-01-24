@@ -1,5 +1,10 @@
 const express = require('express');
-const {createTrip, getAllTrip, getTripsDetail} = require("../controller/trips.controller");
+const {createTrip, getAllTrip, getTripsDetail, importTrip} = require("../controller/trips.controller");
+const {
+    checkFileUploadTypeExcel,
+    uploadXLSXSaveStoreCloud,
+    uploadSingleImageDiskStore
+} = require("../middleware/upload/upload");
 
 
 const TripsRouter = express.Router();
@@ -8,6 +13,7 @@ const TripsRouter = express.Router();
 TripsRouter.post("/create-trip", createTrip);
 TripsRouter.get("/list-trips", getAllTrip);
 TripsRouter.get("/:id", getTripsDetail);
+TripsRouter.post("/import-trip", uploadSingleImageDiskStore(), importTrip);
 
 module.exports = {
     TripsRouter,

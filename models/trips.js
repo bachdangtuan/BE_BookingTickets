@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     Trips.init({
-        startTime: DataTypes.DATE,
+        startTime: DataTypes.DATE || DataTypes.STRING,
         price: DataTypes.FLOAT,
         status: DataTypes.STRING
     }, {

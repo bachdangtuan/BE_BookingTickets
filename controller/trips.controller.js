@@ -1,4 +1,42 @@
 const {Trips, Stations, Users, Ticket, passengerCarCompanies, Vehicles} = require('../models')
+const xlsx = require('xlsx')
+const axios = require('axios');
+const moment = require("moment");
+
+const importTrip = async (req, res) => {
+    /* Logic upload file lên gửi vào trong filebase lấy đường link chạy 1 hàm axios để lấy dữ liệu về đọc file đó */
+    const xlFile = xlsx.readFile('public/dataExcel.xlsx')
+    const sheet = xlFile.Sheets[xlFile.SheetNames[0]]
+
+    const JSON_RAW = xlsx.utils.sheet_to_json(sheet)
+
+    try {
+        for (let i = 0; i < JSON_RAW.length; i++) {
+
+            // function ExcelDateToJSDate(date) {
+            //     return new Date(Math.round((date - 25569)*86400*1000));
+            // }
+            //
+            // console.log('hihi')
+            JSON_RAW[i].startTime = new Date(Math.round((JSON_RAW[i].startTime - 25569) * 86400 * 1000))
+            await Trips.create({
+                    startTime: JSON_RAW[i].startTime,
+                    fromStation: JSON_RAW[i].fromStation,
+                    toStation: JSON_RAW[i].toStation,
+                    price: JSON_RAW[i].price,
+                    status: '1',
+                }
+            )
+        }
+        res.status(200).send({
+            message: 'Upload thành công',
+            JSON_RAW,
+
+        })
+    } catch (err) {
+        res.send(err)
+    }
+}
 
 const createTrip = async (req, res) => {
     const {fromStation, toStation, startTime, price} = req.body
@@ -110,4 +148,4 @@ const getTripsDetail = async (req, res) => {
     }
 }
 
-module.exports = {createTrip, getAllTrip, getTripsDetail}
+module.exports = {createTrip, getAllTrip, getTripsDetail, importTrip}

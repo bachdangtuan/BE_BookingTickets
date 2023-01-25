@@ -3,6 +3,7 @@ const xlsx = require('xlsx')
 const axios = require('axios');
 const moment = require("moment");
 const sequelize = require("sequelize");
+const STATUS = require("../core/constant/status.constant")
 
 const importTrip = async (req, res) => {
     /* Logic upload file lưu vào thư mục public sau đó đọc file và insert vào bảng */
@@ -23,7 +24,7 @@ const importTrip = async (req, res) => {
                 }
             )
         }
-        res.status(200).send({
+        res.status(STATUS.STATUS_200).send({
             message: 'Upload thành công',
             JSON_RAW,
 
@@ -44,7 +45,7 @@ const createTrip = async (req, res) => {
         status: '1'
     })
 
-    res.status(201).send({
+    res.status(STATUS.STATUS_201).send({
         message: 'Tạo thành công',
         newTrip
     })
@@ -88,13 +89,13 @@ const getAllTrip = async (req, res) => {
             ],
             attributes: {exclude: ['fromStation', 'toStation', 'createdAt', 'updatedAt']}
         }
-        if (req.query.status) {
+        if (status) {
             optionQueryDB.where = {status: status}
-        }else{
+        } else {
 
         }
         const listTrips = await Trips.findAndCountAll(optionQueryDB)
-        res.status(200).send({
+        res.status(STATUS.STATUS_200).send({
             message: 'Lấy thành công',
             thisPage: page,
             limit: limit,
@@ -102,7 +103,7 @@ const getAllTrip = async (req, res) => {
             totalItems: listTrips.count,
         })
     } catch (e) {
-        console.log('e', e)
+        res.status(STATUS.STATUS_500).send(e)
     }
 
 }
@@ -146,9 +147,9 @@ const getTripsDetail = async (req, res) => {
 
             where: {id}
         })
-        res.status(200).send(trip)
+        res.status(STATUS.STATUS_200).send(trip)
     } catch (err) {
-        res.status(500).send(err)
+        res.status(STATUS.STATUS_500).send(err)
     }
 }
 

@@ -1,5 +1,6 @@
 const {Stations} = require('../models')
 const {Op} = require('sequelize')
+const STATUS = require("../core/constant/status.constant")
 
 // Hàm tạo Bến Xe
 const createStation = async (req, res) => {
@@ -9,9 +10,9 @@ const createStation = async (req, res) => {
         const newStations = await Stations.create({
             name, address, province
         })
-        res.status(201).send(newStations)
+        res.status(STATUS.STATUS_201).send(newStations)
     } catch (err) {
-        res.status(500).send(err)
+        res.status(STATUS.STATUS_500).send(err)
     }
 }
 
@@ -21,7 +22,7 @@ const getAllStation = async (req, res) => {
     try {
         if (!name) {
             const stationList = await Stations.findAll()
-            res.status(200).send(stationList)
+            res.status(STATUS.STATUS_200).send(stationList)
         } else {
             const stationList = await Stations.findAll({
                 where: {
@@ -30,11 +31,11 @@ const getAllStation = async (req, res) => {
                     },
                 },
             })
-            res.status(200).send(stationList)
+            res.status(STATUS.STATUS_200).send(stationList)
         }
 
     } catch (err) {
-        res.status(500).send(err)
+        res.status(STATUS.STATUS_500).send(err)
     }
 }
 
@@ -46,9 +47,9 @@ const getDetailStation = async (req, res) => {
         const station = await Stations.findOne({
             where: {id}
         })
-        res.status(200).send(station)
+        res.status(STATUS.STATUS_200).send(station)
     } catch (err) {
-        res.status(500).send(err)
+        res.status(STATUS.STATUS_500).send(err)
     }
 }
 
@@ -65,12 +66,12 @@ const updateDetailStation = async (req, res) => {
         stationDetail.address = address;
         stationDetail.province = province;
         await stationDetail.save()
-        return res.status(200).json({
+        return res.status(STATUS.STATUS_200).json({
             stationDetail,
             message: 'Cập nhật thành công'
         })
     } catch (err) {
-        res.status(500).send(err)
+        res.status(STATUS.STATUS_500).send(err)
     }
 }
 
@@ -86,7 +87,7 @@ const deleteDetailStation = async (req, res) => {
             message: 'Cập nhật thành công'
         })
     } catch (err) {
-        res.status(500).send(err)
+        res.status(STATUS.STATUS_500).send(err)
     }
 }
 

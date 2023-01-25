@@ -1,4 +1,5 @@
 const {Trips, Vehicles, Stations} = require('../models')
+const STATUS = require("../core/constant/status.constant")
 
 // TẠO NHÀ XE
 const createVehicle = async (req, res) => {
@@ -13,7 +14,7 @@ const createVehicle = async (req, res) => {
         description,
         status: true
     })
-    res.status(201).send({
+    res.status(STATUS.STATUS_201).send({
         message: 'Tạo thành công',
         newVehicle
     })
@@ -30,7 +31,7 @@ const getAllVehicle = async (req, res) => {
             limit: limit,
             offset: start,
         })
-        res.status(200).send({
+        res.status(STATUS.STATUS_200).send({
             thisPage: page,
             limit: limit,
             data: listVehicles.rows,
@@ -38,7 +39,9 @@ const getAllVehicle = async (req, res) => {
             message: 'Lấy thành công',
         })
     } catch (e) {
-
+        res.status(STATUS.STATUS_500).send({
+            message: 'Lỗi server',
+        })
     }
 }
 

@@ -196,7 +196,7 @@ const resetPassword = async (req, res) => {
 
         } else {
             res.status(STATUS.STATUS_404).send({
-                message: 'Không có user nào với email'
+                message: `Không có user nào với email ${email}`
             })
         }
 

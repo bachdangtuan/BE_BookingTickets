@@ -89,7 +89,7 @@ const getAllTrip = async (req, res) => {
             ],
             attributes: {exclude: ['fromStation', 'toStation', 'createdAt', 'updatedAt']}
         }
-        if (req.query.status) {
+        if (status) {
             optionQueryDB.where = {status: status}
         } else {
 

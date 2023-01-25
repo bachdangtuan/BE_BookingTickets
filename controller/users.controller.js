@@ -2,9 +2,11 @@ const {Users} = require("../models/");
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const {Trips, Stations, Ticket} = require('../models')
+const nodemailer = require('nodemailer');
+
 
 const STATUS = require("../core/constant/status.constant")
-
+const EMAIL_CONFIG = require("../core/constant/email-config.constant")
 // Hàm tạo user
 const createUser = async (req, res) => {
     // console.log('req', req.body)
@@ -140,16 +142,58 @@ const uploadAvatar = async (req, res) => {
 
 // Hàm lấy lại mật khẩu
 const resetPassword = async (req, res) => {
+    /* Logic Check email xem có trong db hay không, nếu có thì gửi 1 đường link chọ để họ lấy lại mật khẩu*/
     const {email} = req.body
     try {
         const user = await Users.findOne({
             where: {email}
         })
         if (user) {
+            const defaultPassword = '12345678'
+
+            const salt = bcrypt.genSaltSync(15)
+            // mã hóa chuỗi
+            user.password = bcrypt.hashSync(defaultPassword, salt)
+            await user.save()
+            console.log('user', user)
+            let transporter = nodemailer.createTransport(EMAIL_CONFIG);
+            let mailOptions = {
+                from: '"Lấy lại mật khẩu" <dangtunguyen_hr@outlook.com.vn>', // sender address
+                to: `${email}`, // list of receivers
+                subject: 'Shreyu - Lấy lại mật khẩu ', // Subject line
+                html: `
+                    <div>
+                        <h4>Xin chào <b style="color: red">${user.name}</b> 
+                            <br>đã được reset về mật khẩu mặc định<br>
+                       </h4> 
+                          <span>Username: ${user.username}</span><br>
+                          <p>Password: ${defaultPassword} </p>
+                       <i>Để đổi lại mật khẩu vui lòng đăng nhập trang quản trị để thực hiện ,Cảm ơn đã sử dụng dịch vụ của chúng tôi !</i>
+                    </div>`
+                // attachments: [
+                //     {   // utf-8 string as an attachment
+                //         filename: 'text1.txt',
+                //         content: 'hello world!'
+                //     },
+                //     {   // binary buffer as an attachment
+                //         filename: 'image.jpg',
+                //         content: new Buffer.from('iVBORw0KGg....', 'base64')
+                //     }
+                // ],
+            };
+
+
+            await transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message sent: %s', info.messageId);
+            });
             res.status(STATUS.STATUS_200).send({
                 user,
                 message: 'Thành công'
             })
+
         } else {
             res.status(STATUS.STATUS_404).send({
                 message: 'Không có user nào với email'

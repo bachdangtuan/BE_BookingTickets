@@ -25,5 +25,6 @@ jobs:
                 with:
                     node-version: ${{ matrix.node-version }}
                     cache: 'npm'
-            -   run: yarn install
-                     node start
+            -   run:
+                    yarn install
+                    yarn start

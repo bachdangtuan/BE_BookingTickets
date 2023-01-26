@@ -32,7 +32,7 @@ jobs:
             #                      pm2 delete server
             #                      pm2 start server.js
             - name: SSH to server GCP
-              uses: appleboy/ssh-action@master
+              uses: appleboy/ssh-action@v0.1.2
               with:
                   host: ${{ secrets.HOST }}
                   username: ${{ secrets.USERNAME }}

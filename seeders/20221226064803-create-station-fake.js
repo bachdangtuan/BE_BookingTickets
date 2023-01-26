@@ -12,7 +12,7 @@ module.exports = {
          *   isBetaMember: false
          * }], {});
          */
-        await queryInterface.bulkInsert('stations', [
+        await queryInterface.bulkInsert('Stations', [
             {
                 name: "Bến Xe Giáp Bát",
                 address: "Giải Phóng, Giáp Bát, Hoàng Mai, Hà Nội",
@@ -192,6 +192,6 @@ module.exports = {
          * Example:
          * await queryInterface.bulkDelete('People', null, {});
          */
-        await queryInterface.bulkDelete('stations', null, {});
+        await queryInterface.bulkDelete('Stations', null, {});
     }
 };

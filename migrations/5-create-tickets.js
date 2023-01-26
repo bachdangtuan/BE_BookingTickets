@@ -8,7 +8,7 @@ module.exports = {
          *
          * Example:
          */
-        await queryInterface.createTable('tickets', {
+        await queryInterface.createTable('Tickets', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -18,14 +18,14 @@ module.exports = {
             trip_id: {
                 type: Sequelize.INTEGER,
                 references: {
-                    model: 'trips',
+                    model: 'Trips',
                     key: "id",
                 }
             },
             user_id: {
                 type: Sequelize.INTEGER,
                 references: {
-                    model: 'users',
+                    model: 'Users',
                     key: "id",
                 }
             },
@@ -46,6 +46,6 @@ module.exports = {
          *
          * Example:
          */
-        await queryInterface.dropTable('tickets');
+        await queryInterface.dropTable('Tickets');
     }
 };

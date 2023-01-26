@@ -12,7 +12,7 @@ module.exports = {
          *   isBetaMember: false
          * }], {});
          */
-        await queryInterface.bulkInsert('vehicles', [
+        await queryInterface.bulkInsert('Vehicles', [
             {
                 name: 'Mitsubishi Xpander',
                 images: 'https://images.autofun.vn/file1/da12deac380c479ba6ffd7e59a38ad08_456x258.jpg',
@@ -232,6 +232,6 @@ module.exports = {
          * Example:
          * await queryInterface.bulkDelete('People', null, {});
          */
-        await queryInterface.bulkDelete('vehicles', null, {});
+        await queryInterface.bulkDelete('Vehicles', null, {});
     }
 };

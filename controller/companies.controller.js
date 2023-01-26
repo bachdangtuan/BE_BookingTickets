@@ -1,4 +1,4 @@
-const {passengerCarCompanies, Trips, Vehicles, Stations, Users} = require('../models')
+const {passengerCarCompanies, Trips, Vehicles, Stations, users} = require('../models')
 const STATUS = require("../core/constant/status.constant")
 // TẠO NHÀ XE
 const createCompany = async (req, res) => {
@@ -73,7 +73,7 @@ const getDetailCompanies = async (req, res) => {
                             attributes: {exclude: ['createdAt', 'updatedAt']}
                         },
                         {
-                            model: Users,
+                            model: users,
                             as: 'user',
                             through: {attributes: []},
                             attributes: {exclude: ['createdAt', 'updatedAt', 'password']}

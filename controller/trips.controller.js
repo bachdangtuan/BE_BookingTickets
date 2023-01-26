@@ -1,4 +1,4 @@
-const {Trips, Stations, Users, Ticket, passengerCarCompanies, Vehicles} = require('../models')
+const {Trips, Stations, users, passengerCarCompanies, Vehicles} = require('../models')
 const xlsx = require('xlsx')
 const axios = require('axios');
 const moment = require("moment");
@@ -79,7 +79,7 @@ const getAllTrip = async (req, res) => {
                 //     attributes: {exclude: ['createdAt', 'updatedAt']}
                 // },
                 {
-                    model: Users,
+                    model: users,
                     as: 'user',
                     through: {attributes: []},
                     attributes: {
@@ -138,7 +138,7 @@ const getTripsDetail = async (req, res) => {
                     ]
                 },
                 {
-                    model: Users,
+                    model: users,
                     as: 'user',
                     through: {attributes: []},
                     attributes: {exclude: ['createdAt', 'updatedAt', 'password']}

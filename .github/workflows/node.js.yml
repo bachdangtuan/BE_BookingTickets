@@ -42,4 +42,4 @@ jobs:
                       cd /home/darktuan/actions-runner/_work/BE_BookingTickets/BE_BookingTickets
                       pm2 delete server
                       pm2 start server.js
-                      echo "Thành công"
+                      echo "Thành công Deploy"

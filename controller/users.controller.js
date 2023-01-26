@@ -1,4 +1,4 @@
-const {Users} = require("../models/");
+const {users} = require("../models/");
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const {Trips, Stations, Ticket} = require('../models')
@@ -16,7 +16,7 @@ const createUser = async (req, res) => {
         const salt = bcrypt.genSaltSync(15)
         // mã hóa chuỗi
         const hashPass = bcrypt.hashSync(password, salt)
-        const newStations = await Users.create({
+        const newStations = await users.create({
             name, email, password: hashPass, numberPhone, username
         })
         res.status(STATUS.STATUS_201).send(newStations)
@@ -29,7 +29,7 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const {username, password} = req.body
     // tìm user tồn tại
-    const user = await Users.findOne({
+    const user = await users.findOne({
         where: {username}
     })
     if (user) {
@@ -59,7 +59,7 @@ const loginUser = async (req, res) => {
 // Hàm lấy dữ liệu
 const getAllUser = async (req, res) => {
     try {
-        const newUser = await Users.findAll(
+        const newUser = await users.findAll(
             {
                 include: [
                     {
@@ -95,7 +95,7 @@ const getUserDetail = async (req, res) => {
     const {id} = req.params
     try {
         // tìm trong DB có id không
-        const user = await Users.findOne({
+        const user = await users.findOne({
             where: {id},
             include: [
                 {
@@ -129,7 +129,7 @@ const uploadAvatar = async (req, res) => {
     const {firebaseUrl} = req.file
     const {user} = req
     // tìm kiếm User trong bảng DB
-    const userFound = await Users.findOne({
+    const userFound = await users.findOne({
         username: user.username
     })
     userFound.avatar = firebaseUrl
@@ -145,7 +145,7 @@ const resetPassword = async (req, res) => {
     /* Logic Check email xem có trong db hay không, nếu có thì gửi 1 đường link chọ để họ lấy lại mật khẩu*/
     const {email} = req.body
     try {
-        const user = await Users.findOne({
+        const user = await users.findOne({
             where: {email}
         })
         if (user) {

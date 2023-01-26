@@ -1,7 +1,6 @@
-const {users} = require("../models/");
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const {Trips, Stations, Ticket} = require('../models')
+const {Trips, Stations, Ticket, users} = require('../models')
 const nodemailer = require('nodemailer');
 
 

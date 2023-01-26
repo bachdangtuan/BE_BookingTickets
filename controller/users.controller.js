@@ -29,30 +29,37 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const {username, password} = req.body
     // tìm user tồn tại
-    const user = await users.findOne({
-        where: {username}
-    })
-    if (user) {
-        const isAuth = bcrypt.compareSync(password, user.password)
-        if (isAuth) {
-            const accessToken = jwt.sign({username: user.username, type: user.type}, "12345678", {
-                expiresIn: 60 * 60
-            });
-            res.status(STATUS.STATUS_200).send({
-                user,
-                accessToken,
-                message: "Người dùng đăng nhập thành công !"
-            })
+    try {
+        const user = await users.findOne({
+            where: {username}
+        })
+        if (user) {
+            const isAuth = bcrypt.compareSync(password, user.password)
+            if (isAuth) {
+                const accessToken = jwt.sign({username: user.username, type: user.type}, "12345678", {
+                    expiresIn: 60 * 60
+                });
+                res.status(STATUS.STATUS_200).send({
+                    user,
+                    accessToken,
+                    message: "Người dùng đăng nhập thành công !"
+                })
+            } else {
+                return res.status(STATUS.STATUS_400).send({
+                    message: "Tài khoản mật khẩu không đúng !"
+                })
+            }
         } else {
-            return res.status(STATUS.STATUS_400).send({
-                message: "Tài khoản mật khẩu không đúng !"
+            return res.status(STATUS.STATUS_404).send({
+                message: "Không có tài khoản"
             })
         }
-    } else {
-        return res.status(STATUS.STATUS_404).send({
-            message: "Không có tài khoản"
+    } catch (e) {
+        return res.status(STATUS.STATUS_500).send({
+            message: "Lỗi sơ vơ"
         })
     }
+
     // kiểm tra mật khẩu
 }
 

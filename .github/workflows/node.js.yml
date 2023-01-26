@@ -27,3 +27,15 @@ jobs:
                     cache: 'npm'
             -   run: npm i
                      npm run start
+#
+#            - name: SSH to server GCP
+#              uses: appleboy/ssh-action@master
+#              with:
+#                  host: ${{ secrets.HOST }}
+#                  username: ${{ secrets.USERNAME }}
+#                  password: ${{ secrets.PASSWORD }}
+#                  script: |
+#                      echo "login thư mục để chuẩn bị chạy pm2"
+#                      cd /home/darktuan/actions-runner/_work/BE_BookingTickets/BE_BookingTickets
+#                      pm2 delete server
+#                      pm2 start server.js

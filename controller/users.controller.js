@@ -193,12 +193,12 @@ const resetPassword = async (req, res) => {
                 if (error) {
                     return console.log(error);
                 }
+                res.status(STATUS.STATUS_200).send({
+                    user,
+                    message: 'Thành công'
+                })
                 console.log('Message sent: %s', info.messageId);
             });
-            res.status(STATUS.STATUS_200).send({
-                user,
-                message: 'Thành công'
-            })
 
         } else {
             res.status(STATUS.STATUS_404).send({

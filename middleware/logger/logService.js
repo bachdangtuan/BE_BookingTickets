@@ -18,7 +18,7 @@ mongoose.connect(mongoURI, {
 
 
 const format = morganJson({
-    IP_request: ':req[ip]',
+    IP_request: ':remote-addr',
     short: ':method',
     url: ':url',
     status: ':status',

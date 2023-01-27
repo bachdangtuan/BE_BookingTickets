@@ -4,43 +4,47 @@
 name: Node.js
 
 on:
-    push:
-        branches: [ "master" ]
+  push:
+    branches: [ "master" ]
 
 jobs:
-    build:
+  build:
 
-        runs-on: self-hosted
+    runs-on: self-hosted
 
-        strategy:
-            matrix:
-                node-version: [ 16.x ]
-                # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-        steps:
-            -   uses: actions/checkout@v3
-            -   name: Use Node.js ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
 
-                uses: actions/setup-node@v3
-                with:
-                    node-version: ${{ matrix.node-version }}
-                    cache: 'npm'
-            -   run: npm i
-                    # npm run start
-#                     echo "login thư mục để chuẩn bị chạy pm2"
-            #                      cd /home/darktuan/actions-runner/_work/BE_BookingTickets/BE_BookingTickets
-            #                      pm2 delete server
-            #                      pm2 start server.js
-            - name: SSH to server GCP
-              uses: appleboy/ssh-action@master
-              with:
-                  host: ${{ secrets.HOST }}
-                  username: ${{ secrets.USERNAME }}
-                  password: ${{ secrets.PASSWORD }}
-                  script: |
-                      echo "login thư mục để chuẩn bị chạy pm2"
-                      cd /home/darktuan/server
-                      chmod 777 startserver.sh
-                      ./startserver.sh
-                    
-                      echo "START SERVICE COMPLETE !!"
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm i
+
+
+      - run: npm install pm2@latest -g #install pm2 global
+      - run: pm2 -V #check pm2 version
+      - run: pm2 list #check pm2 list
+      #running pm2 in mode cluster and --watch set to auto restart if index.js have changes.
+      - run: pm2 delete server
+      - run: pm2 start server.js
+        # npm run start
+      #                     echo "login thư mục để chuẩn bị chạy pm2"
+      #                      cd /home/darktuan/actions-runner/_work/BE_BookingTickets/BE_BookingTickets
+      #                      pm2 delete server
+      #                      pm2 start server.js
+#            - name: SSH to server GCP
+#              uses: appleboy/ssh-action@master
+#              with:
+#                  host: ${{ secrets.HOST }}
+#                  username: ${{ secrets.USERNAME }}
+#                  password: ${{ secrets.PASSWORD }}
+#                  script: |
+#                      echo "login thư mục để chuẩn bị chạy pm2"
+

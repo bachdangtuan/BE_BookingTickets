@@ -5,7 +5,7 @@ const {loggerService} = require("./middleware/logger/logService");
 const app = express();
 const {rootRouter} = require('./routers')
 
-// logger service
+// logger service middleware
 app.use(loggerService());
 
 // Add headers before the routes are defined

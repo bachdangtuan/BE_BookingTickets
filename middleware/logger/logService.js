@@ -5,14 +5,6 @@ const morgan = require("morgan");
 const {Log} = require("../../models/mongoDB/Log");
 const mongoURI = 'mongodb+srv://dangtuan:ad8EQJDoUQssDhGY@cluster0.ymsq3wi.mongodb.net/?retryWrites=true&w=majority'
 
-const format = morganJson({
-    IP_request: ':remote-addr',
-    short: ':method',
-    url: ':url',
-    status: ':status',
-    response: ':response-time ms'
-});
-
 // connect DB
 mongoose.set('strictQuery', true);
 mongoose.connect(mongoURI, {
@@ -24,7 +16,25 @@ mongoose.connect(mongoURI, {
     console.log(err)
 })
 
+
+const format = morganJson({
+    IP_request: ':req[ip]',
+    short: ':method',
+    url: ':url',
+    status: ':status',
+    response: ':response-time ms'
+});
+
+
+
 const loggerService = () => {
+    // // let ip
+    // return morgan((tokens, req, res) => {
+    //     console.log(req.ipInfo)
+    //     console.log(req.route)
+    //
+    // })
+
     return morgan(format, {
         stream: {
             write: (message) => {

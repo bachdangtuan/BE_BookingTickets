@@ -4,9 +4,12 @@ const {sequelize} = require('./models');
 const {loggerService} = require("./middleware/logger/logService");
 const app = express();
 const {rootRouter} = require('./routers')
+const expressIp = require('express-ip');
+
 
 // logger service middleware
-app.use(loggerService());
+app.use(expressIp().getIpInfoMiddleware, loggerService());
+app.enable("trust proxy");
 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
@@ -28,6 +31,7 @@ app.use(express.json());
 
 //using router
 app.use("/api/v1", rootRouter)
+
 
 // cài đặt static file
 const publicPathDir = path.join(__dirname, "./public")

@@ -28,34 +28,34 @@ const format = morganJson({
 
 const loggerService = () => {
     // // let ip
-    return morgan((tokens, req, res) => {
-        console.log(req.ipInfo)
-        console.log(req.route)
-        const log = new Log({
-            ip: req.ipInfo.ip,
-            method: '1',
-            url: '1',
-            status: '2',
-            responseTime: '2'
-        });
-        log.save().then();
-    })
-    // return morgan(format, {
-    //     stream: {
-    //         write: (message) => {
-    //             const logData = JSON.parse(message)
-    //             console.log(logData)
-    //             const log = new Log({
-    //                 ip: logData.IP_request,
-    //                 method: logData.method,
-    //                 url: logData.url,
-    //                 status: logData.status,
-    //                 responseTime: logData.response
-    //             });
-    //             log.save().then();
-    //         }
-    //     }
+    // return morgan((tokens, req, res) => {
+    //     console.log(req.ipInfo)
+    //     console.log(req.route)
+    //     const log = new Log({
+    //         ip: req.ipInfo.ip,
+    //         method: '1',
+    //         url: '1',
+    //         status: '2',
+    //         responseTime: '2'
+    //     });
+    //     log.save().then();
     // })
+    return morgan(format, {
+        stream: {
+            write: (message) => {
+                const logData = JSON.parse(message)
+                console.log(logData)
+                const log = new Log({
+                    ip: logData.IP_request,
+                    method: logData.method,
+                    url: logData.url,
+                    status: logData.status,
+                    responseTime: logData.response
+                });
+                log.save().then();
+            }
+        }
+    })
 }
 
 module.exports = {

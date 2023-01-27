@@ -32,11 +32,11 @@ const loggerService = () => {
         console.log(req.ipInfo)
         console.log(req.route)
         const log = new Log({
-            ip: req.ipInfo,
-            // method: logData.method,
-            // url: logData.url,
-            // status: logData.status,
-            // responseTime: logData.response
+            ip: req.ipInfo.ip,
+            method: '1',
+            url: '1',
+            status: '2',
+            responseTime: '2'
         });
         log.save().then();
     })

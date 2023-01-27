@@ -43,4 +43,4 @@ jobs:
                       chmod 777 startserver.sh
                       ./startserver.sh
                     
-                      echo "START SERVICE COMPLETE !!!!"
+                      echo "START SERVICE COMPLETE !!!"

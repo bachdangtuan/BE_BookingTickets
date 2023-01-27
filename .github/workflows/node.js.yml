@@ -40,10 +40,7 @@ jobs:
                   script: |
                       echo "login thư mục để chuẩn bị chạy pm2"
                       cd /home/darktuan/server
-                      chmod 755 startserver.sh
+                      chmod 777 startserver.sh
                       ./startserver.sh
                     
-                      cd /home/darktuan/actions-runner/_work/BE_BookingTickets/BE_BookingTickets
-                      nvm use v16.16.0
-                      pm2 delete server
-                      pm2 start server.js
+                      echo "START SERVICE COMPLETE !!!!"

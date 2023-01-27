@@ -1,4 +1,4 @@
-const {TYPE_USER} = require("../../ultils/common.constant");
+const {TYPE_USER} = require("../../core/constant/common.constant");
 const authorize = (req, res, next) => {
 
     const {user} = req

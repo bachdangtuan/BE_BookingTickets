@@ -5,12 +5,16 @@ const {loggerService} = require("./middleware/logger/logService");
 const app = express();
 const {rootRouter} = require('./routers')
 const expressIp = require('express-ip');
+const morgan = require("morgan");
 
 
 // logger service middleware
 app.use(expressIp().getIpInfoMiddleware, loggerService());
 app.enable("trust proxy");
 
+morgan.token('log_type', function (req, res) {
+    return req.log_type;
+});
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
     // Website you wish to allow to connect

@@ -5,6 +5,8 @@ const LogSchema = new mongoose.Schema({
     method: String,
     url: String,
     status: String,
+    logtype: String,
+    geoIP: [String],
     responseTime: String,
     timestamp: {type: Date, default: Date.now}
 })

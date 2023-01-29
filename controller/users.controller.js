@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 
 const STATUS = require("../core/constant/status.constant")
 const EMAIL_CONFIG = require("../core/constant/email-config.constant")
+const morgan = require("morgan");
 // Hàm tạo user
 const createUser = async (req, res) => {
     // console.log('req', req.body)

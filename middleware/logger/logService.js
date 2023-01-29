@@ -43,8 +43,8 @@ const loggerService = () => {
             write: (message) => {
                 const logData = JSON.parse(message)
                 // check vị trí IP request tại đây
-                // const ip = logData.IP_request;
-                const ip = '113.190.206.59';
+                const ip = logData.IP_request;
+                // const ip = '113.190.206.59';
 
                 const geoIP = geoip.lookup(ip);
 

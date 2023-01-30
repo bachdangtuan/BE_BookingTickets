@@ -1,24 +1,32 @@
 const {passengerCarCompanies, Trips, Vehicles, Stations, users} = require('../models')
 const STATUS = require("../core/constant/status.constant")
+
+const LOG_TYPE = require('../core/constant/logtype.constant')
+
 // TẠO NHÀ XE
 const createCompany = async (req, res) => {
     const {name, image, description, email, phone, address} = req.body
     const {firebaseUrl} = req.file
-    console.log('firebaseUrl', firebaseUrl)
-    const newCompany = await passengerCarCompanies.create({
-        name,
-        image: firebaseUrl,
-        email,
-        description,
-        phone,
-        address,
-        status: true
-    })
+    try {
+        console.log('firebaseUrl', firebaseUrl)
+        const newCompany = await passengerCarCompanies.create({
+            name,
+            image: firebaseUrl,
+            email,
+            description,
+            phone,
+            address,
+            status: true
+        })
+        req.log_type = `${LOG_TYPE.INFO}`
+        res.status(STATUS.STATUS_201).send({
+            message: 'Tạo thành công',
+            newCompany
+        })
 
-    res.status(STATUS.STATUS_201).send({
-        message: 'Tạo thành công',
-        newCompany
-    })
+    } catch (e) {
+        req.log_type = `${LOG_TYPE.ERROR}`
+    }
 }
 
 
@@ -38,6 +46,7 @@ const getAllCompanies = async (req, res) => {
                 },
             ],
         })
+        req.log_type = `${LOG_TYPE.INFO}`
         res.status(STATUS.STATUS_200).send({
             thisPage: page,
             limit: limit,
@@ -46,7 +55,7 @@ const getAllCompanies = async (req, res) => {
             message: 'Lấy thành công',
         })
     } catch (e) {
-
+        req.log_type = `${LOG_TYPE.ERROR}`
     }
 }
 
@@ -89,17 +98,17 @@ const getDetailCompanies = async (req, res) => {
             ]
         })
         res.status(STATUS.STATUS_200).send(detailCompanies)
-
+        req.log_type = `${LOG_TYPE.INFO}`
     } catch (e) {
         res.status(STATUS.STATUS_500).send(e)
+        req.log_type = `${LOG_TYPE.ERROR}`
     }
 
 }
 
 const uploadAvatarCompany = (req, res) => {
     const {firebaseUrl} = req.file
-    console.log('firebaseUrl', firebaseUrl)
-
+    // console.log('firebaseUrl', firebaseUrl)
     res.status(STATUS.STATUS_200).send({
         message: 'Thành công',
         firebaseUrl

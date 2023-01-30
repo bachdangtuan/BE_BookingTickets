@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const {Trips, Stations, Ticket, users} = require('../models')
 const nodemailer = require('nodemailer');
 
+const LOG_TYPE = require('../core/constant/logtype.constant')
 
 const STATUS = require("../core/constant/status.constant")
 const EMAIL_CONFIG = require("../core/constant/email-config.constant")
@@ -12,6 +13,7 @@ const createUser = async (req, res) => {
     // console.log('req', req.body)
     const {name, email, password, username, numberPhone} = req.body
     try {
+        req.log_type = `${LOG_TYPE.INFO}`
         // tạo ra chuỗi ngẫu nhiên
         const salt = bcrypt.genSaltSync(15)
         // mã hóa chuỗi
@@ -21,6 +23,7 @@ const createUser = async (req, res) => {
         })
         res.status(STATUS.STATUS_201).send(newStations)
     } catch (err) {
+        req.log_type = `${LOG_TYPE.ERROR}`
         res.status(STATUS.STATUS_500).send(err)
     }
 }
@@ -30,6 +33,7 @@ const loginUser = async (req, res) => {
     const {username, password} = req.body
     // tìm user tồn tại
     try {
+        req.log_type = `${LOG_TYPE.INFO}`
         const user = await users.findOne({
             where: {username}
         })
@@ -50,11 +54,13 @@ const loginUser = async (req, res) => {
                 })
             }
         } else {
+            req.log_type = `${LOG_TYPE.WARNING}`
             return res.status(STATUS.STATUS_404).send({
                 message: "Không có tài khoản"
             })
         }
     } catch (e) {
+        req.log_type = `${LOG_TYPE.ERROR}`
         return res.status(STATUS.STATUS_500).send({
             message: "Lỗi sơ vơ"
         })
@@ -66,6 +72,7 @@ const loginUser = async (req, res) => {
 // Hàm lấy dữ liệu
 const getAllUser = async (req, res) => {
     try {
+        req.log_type = `${LOG_TYPE.INFO}`
         const newUser = await users.findAll(
             {
                 include: [
@@ -93,6 +100,7 @@ const getAllUser = async (req, res) => {
         )
         res.status(STATUS.STATUS_201).send(newUser)
     } catch (err) {
+        req.log_type = `${LOG_TYPE.ERROR}`
         res.status(STATUS.STATUS_500).send(err)
     }
 }
@@ -125,8 +133,10 @@ const getUserDetail = async (req, res) => {
                 },
             ],
         })
+        req.log_type = `${LOG_TYPE.INFO}`
         res.status(STATUS.STATUS_200).send(user)
     } catch (err) {
+        req.log_type = `${LOG_TYPE.ERROR}`
         res.status(STATUS.STATUS_500).send(err)
     }
 }
@@ -192,8 +202,10 @@ const resetPassword = async (req, res) => {
 
             await transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
+                    req.log_type = `${LOG_TYPE.WARNING}`
                     return console.log(error);
                 }
+                req.log_type = `${LOG_TYPE.INFO}`
                 res.status(STATUS.STATUS_200).send({
                     user,
                     message: 'Thành công'
@@ -202,12 +214,14 @@ const resetPassword = async (req, res) => {
             });
 
         } else {
+            req.log_type = `${LOG_TYPE.WARNING}`
             res.status(STATUS.STATUS_404).send({
                 message: `Không có user nào với email ${email}`
             })
         }
 
     } catch (e) {
+        req.log_type = `${LOG_TYPE.ERROR}`
         res.status(STATUS.STATUS_500).send({
             message: 'Lỗi server'
         })

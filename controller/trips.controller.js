@@ -4,6 +4,7 @@ const axios = require('axios');
 const moment = require("moment");
 const sequelize = require("sequelize");
 const STATUS = require("../core/constant/status.constant")
+const LOG_TYPE = require("../core/constant/logtype.constant");
 
 const importTrip = async (req, res) => {
     /* Logic upload file lưu vào thư mục public sau đó đọc file và insert vào bảng */
@@ -24,6 +25,7 @@ const importTrip = async (req, res) => {
                 }
             )
         }
+        req.log_type = `${LOG_TYPE.INFO}`
         res.status(STATUS.STATUS_200).send({
             message: 'Upload thành công',
             JSON_RAW,
@@ -31,24 +33,31 @@ const importTrip = async (req, res) => {
         })
     } catch (err) {
         res.send(err)
+        req.log_type = `${LOG_TYPE.ERROR}`
     }
 }
 
 const createTrip = async (req, res) => {
     const {fromStation, toStation, startTime, price} = req.body
 
-    const newTrip = await Trips.create({
-        fromStation,
-        toStation,
-        startTime,
-        price,
-        status: '1'
-    })
+    try {
+        const newTrip = await Trips.create({
+            fromStation,
+            toStation,
+            startTime,
+            price,
+            status: '1'
+        })
+        req.log_type = `${LOG_TYPE.INFO}`
+        res.status(STATUS.STATUS_201).send({
+            message: 'Tạo thành công',
+            newTrip
+        })
 
-    res.status(STATUS.STATUS_201).send({
-        message: 'Tạo thành công',
-        newTrip
-    })
+    } catch (e) {
+        req.log_type = `${LOG_TYPE.ERROR}`
+    }
+
 }
 
 const getAllTrip = async (req, res) => {
@@ -94,7 +103,8 @@ const getAllTrip = async (req, res) => {
         } else {
 
         }
-        const listTrips = await Trips.findAndCountAll(optionQueryDB)
+        const listTrips = await Trips.findAndCountAll(optionQueryDB);
+        req.log_type = `${LOG_TYPE.INFO}`
         res.status(STATUS.STATUS_200).send({
             message: 'Lấy thành công',
             thisPage: page,
@@ -103,6 +113,7 @@ const getAllTrip = async (req, res) => {
             totalItems: listTrips.count,
         })
     } catch (e) {
+        req.log_type = `${LOG_TYPE.ERROR}`
         res.status(STATUS.STATUS_500).send(e)
     }
 
@@ -147,8 +158,10 @@ const getTripsDetail = async (req, res) => {
 
             where: {id}
         })
+        req.log_type = `${LOG_TYPE.INFO}`
         res.status(STATUS.STATUS_200).send(trip)
     } catch (err) {
+        req.log_type = `${LOG_TYPE.ERROR}`
         res.status(STATUS.STATUS_500).send(err)
     }
 }

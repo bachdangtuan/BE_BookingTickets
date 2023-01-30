@@ -1,23 +1,30 @@
 const {Trips, Vehicles, Stations} = require('../models')
 const STATUS = require("../core/constant/status.constant")
+const LOG_TYPE = require("../core/constant/logtype.constant");
 
 // TẠO NHÀ XE
 const createVehicle = async (req, res) => {
     const {firebaseUrl} = req.file
     const {name, type, description, numberRegister, driver} = req.body
 
-    const newVehicle = await Vehicles.create({
-        name,
-        images: firebaseUrl,
-        numberRegister,
-        driver,
-        description,
-        status: true
-    })
-    res.status(STATUS.STATUS_201).send({
-        message: 'Tạo thành công',
-        newVehicle
-    })
+    try {
+        const newVehicle = await Vehicles.create({
+            name,
+            images: firebaseUrl,
+            numberRegister,
+            driver,
+            description,
+            status: true
+        })
+        req.log_type = `${LOG_TYPE.INFO}`
+        res.status(STATUS.STATUS_201).send({
+            message: 'Tạo thành công',
+            newVehicle
+        })
+
+    } catch (e) {
+        req.log_type = `${LOG_TYPE.ERROR}`
+    }
 }
 
 
@@ -31,6 +38,9 @@ const getAllVehicle = async (req, res) => {
             limit: limit,
             offset: start,
         })
+
+
+        req.log_type = `${LOG_TYPE.INFO}`
         res.status(STATUS.STATUS_200).send({
             thisPage: page,
             limit: limit,
@@ -39,6 +49,7 @@ const getAllVehicle = async (req, res) => {
             message: 'Lấy thành công',
         })
     } catch (e) {
+        req.log_type = `${LOG_TYPE.ERROR}`
         res.status(STATUS.STATUS_500).send({
             message: 'Lỗi server',
         })

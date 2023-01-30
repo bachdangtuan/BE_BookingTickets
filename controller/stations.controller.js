@@ -1,6 +1,7 @@
 const {Stations} = require('../models')
 const {Op} = require('sequelize')
 const STATUS = require("../core/constant/status.constant")
+const LOG_TYPE = require("../core/constant/logtype.constant");
 
 // Hàm tạo Bến Xe
 const createStation = async (req, res) => {
@@ -47,9 +48,11 @@ const getDetailStation = async (req, res) => {
         const station = await Stations.findOne({
             where: {id}
         })
+        req.log_type = `${LOG_TYPE.INFO}`
         res.status(STATUS.STATUS_200).send(station)
     } catch (err) {
         res.status(STATUS.STATUS_500).send(err)
+        req.log_type = `${LOG_TYPE.ERROR}`
     }
 }
 
@@ -72,6 +75,7 @@ const updateDetailStation = async (req, res) => {
         })
     } catch (err) {
         res.status(STATUS.STATUS_500).send(err)
+        req.log_type = `${LOG_TYPE.ERROR}`
     }
 }
 
@@ -88,6 +92,7 @@ const deleteDetailStation = async (req, res) => {
         })
     } catch (err) {
         res.status(STATUS.STATUS_500).send(err)
+        req.log_type = `${LOG_TYPE.ERROR}`
     }
 }
 

@@ -8,7 +8,7 @@ const EMAIL_CONFIG = require("../core/constant/email-config.constant")
 const botTelegram = require('../core/constant/telegramAlert').module.botTelegram
 const GROUP_CHAT_ID = require('../core/constant/GroupIDTelegram')
 
-const {alertTelegramWarning} = require('../core/function/alert').module
+const {alertTelegramWarning, alertTelegramLoginFalse} = require('../core/function/alert').module
 
 // Hàm tạo user
 const createUser = async (req, res) => {
@@ -52,7 +52,7 @@ const loginUser = async (req, res) => {
                     message: "Người dùng đăng nhập thành công !"
                 })
             } else {
-                await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramWarning(LOG_TYPE.WARNING, originalURL, STATUS.STATUS_400));
+                await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramLoginFalse(LOG_TYPE.WARNING, originalURL, STATUS.STATUS_400));
                 return res.status(STATUS.STATUS_400).send({
                     message: "Tài khoản mật khẩu không đúng !"
                 })

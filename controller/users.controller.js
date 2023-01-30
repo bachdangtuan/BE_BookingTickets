@@ -2,12 +2,14 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const {Trips, Stations, Ticket, users} = require('../models')
 const nodemailer = require('nodemailer');
-
 const LOG_TYPE = require('../core/constant/logtype.constant')
-
 const STATUS = require("../core/constant/status.constant")
 const EMAIL_CONFIG = require("../core/constant/email-config.constant")
-const morgan = require("morgan");
+const botTelegram = require('../core/constant/telegramAlert').module.botTelegram
+const GROUP_CHAT_ID = require('../core/constant/GroupIDTelegram')
+
+const {alertTelegramWarning} = require('../core/function/alert').module
+
 // Hàm tạo user
 const createUser = async (req, res) => {
     // console.log('req', req.body)
@@ -31,6 +33,7 @@ const createUser = async (req, res) => {
 // Hàm login
 const loginUser = async (req, res) => {
     const {username, password} = req.body
+    const originalURL = req.originalUrl
     // tìm user tồn tại
     try {
         req.log_type = `${LOG_TYPE.INFO}`
@@ -58,9 +61,11 @@ const loginUser = async (req, res) => {
             return res.status(STATUS.STATUS_404).send({
                 message: "Không có tài khoản"
             })
+
         }
     } catch (e) {
         req.log_type = `${LOG_TYPE.ERROR}`
+        await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramWarning(LOG_TYPE.ERROR, originalURL, STATUS.STATUS_500));
         return res.status(STATUS.STATUS_500).send({
             message: "Lỗi sơ vơ"
         })
@@ -71,6 +76,7 @@ const loginUser = async (req, res) => {
 
 // Hàm lấy dữ liệu
 const getAllUser = async (req, res) => {
+    const originalURL = req.originalUrl
     try {
         req.log_type = `${LOG_TYPE.INFO}`
         const newUser = await users.findAll(
@@ -101,6 +107,7 @@ const getAllUser = async (req, res) => {
         res.status(STATUS.STATUS_201).send(newUser)
     } catch (err) {
         req.log_type = `${LOG_TYPE.ERROR}`
+        await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramWarning(LOG_TYPE.ERROR, originalURL, STATUS.STATUS_500));
         res.status(STATUS.STATUS_500).send(err)
     }
 }
@@ -108,6 +115,7 @@ const getAllUser = async (req, res) => {
 // Hàm xe chi tiết một user
 const getUserDetail = async (req, res) => {
     const {id} = req.params
+    const originalURL = req.originalUrl
     try {
         // tìm trong DB có id không
         const user = await users.findOne({
@@ -137,6 +145,7 @@ const getUserDetail = async (req, res) => {
         res.status(STATUS.STATUS_200).send(user)
     } catch (err) {
         req.log_type = `${LOG_TYPE.ERROR}`
+        await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramWarning(LOG_TYPE.ERROR, originalURL, STATUS.STATUS_500));
         res.status(STATUS.STATUS_500).send(err)
     }
 }
@@ -159,6 +168,7 @@ const uploadAvatar = async (req, res) => {
 
 // Hàm lấy lại mật khẩu
 const resetPassword = async (req, res) => {
+    const originalURL = req.originalUrl
     /* Logic Check email xem có trong db hay không, nếu có thì gửi 1 đường link chọ để họ lấy lại mật khẩu*/
     const {email} = req.body
     try {
@@ -200,10 +210,12 @@ const resetPassword = async (req, res) => {
             };
 
 
-            await transporter.sendMail(mailOptions, (error, info) => {
+            await transporter.sendMail(mailOptions, async (error, info) => {
                 if (error) {
                     req.log_type = `${LOG_TYPE.WARNING}`
+                    await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramWarning(LOG_TYPE.ERROR, originalURL, STATUS.STATUS_500));
                     return console.log(error);
+
                 }
                 req.log_type = `${LOG_TYPE.INFO}`
                 res.status(STATUS.STATUS_200).send({
@@ -222,6 +234,7 @@ const resetPassword = async (req, res) => {
 
     } catch (e) {
         req.log_type = `${LOG_TYPE.ERROR}`
+        await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramWarning(LOG_TYPE.ERROR, originalURL, STATUS.STATUS_500));
         res.status(STATUS.STATUS_500).send({
             message: 'Lỗi server'
         })

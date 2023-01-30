@@ -52,6 +52,7 @@ const loginUser = async (req, res) => {
                     message: "Người dùng đăng nhập thành công !"
                 })
             } else {
+                await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramWarning(LOG_TYPE.WARNING, originalURL, STATUS.STATUS_400));
                 return res.status(STATUS.STATUS_400).send({
                     message: "Tài khoản mật khẩu không đúng !"
                 })

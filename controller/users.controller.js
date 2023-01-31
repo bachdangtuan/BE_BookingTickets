@@ -46,9 +46,14 @@ const loginUser = async (req, res) => {
                 const accessToken = jwt.sign({username: user.username, type: user.type}, "12345678", {
                     expiresIn: 60 * 60
                 });
+                // refresh Token
+                const refreshToken = jwt.sign({username: user.username, type: user.type}, "12345678", {
+                    expiresIn: 600 * 600
+                });
                 res.status(STATUS.STATUS_200).send({
                     user,
                     accessToken,
+                    refreshToken,
                     message: "Người dùng đăng nhập thành công !"
                 })
             } else {

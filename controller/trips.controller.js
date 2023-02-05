@@ -5,6 +5,8 @@ const moment = require("moment");
 const sequelize = require("sequelize");
 const STATUS = require("../core/constant/status.constant")
 const LOG_TYPE = require("../core/constant/logtype.constant");
+const clientRedis = require('../service/connectRedis').module //connect redis
+
 
 const importTrip = async (req, res) => {
     /* Logic upload file lưu vào thư mục public sau đó đọc file và insert vào bảng */
@@ -62,9 +64,15 @@ const createTrip = async (req, res) => {
 
 const getAllTrip = async (req, res) => {
     try {
+
+        console.log(req.query.status)
+        console.log(req.query.limit)
+        console.log(req.query.page)
+
+
         const status = parseInt(req.query.status)
-        const limit = parseInt(req.query.limit)
-        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit) || 10
+        const page = parseInt(req.query.page) || 1
         const start = (page - 1) * limit;
 
         let optionQueryDB = {
@@ -81,12 +89,6 @@ const getAllTrip = async (req, res) => {
                     as: "to",
                     attributes: {exclude: ['createdAt', 'updatedAt']}
                 },
-                // {
-                //     model: passengerCarCompanies,
-                //     as: "company",
-                //     through: {attributes: []},
-                //     attributes: {exclude: ['createdAt', 'updatedAt']}
-                // },
                 {
                     model: users,
                     as: 'user',
@@ -99,19 +101,52 @@ const getAllTrip = async (req, res) => {
             attributes: {exclude: ['fromStation', 'toStation', 'createdAt', 'updatedAt']}
         }
         if (status) {
+            console.log('tồn tại status')
             optionQueryDB.where = {status: status}
-        } else {
-
         }
-        const listTrips = await Trips.findAndCountAll(optionQueryDB);
-        req.log_type = `${LOG_TYPE.INFO}`
-        res.status(STATUS.STATUS_200).send({
-            message: 'Lấy thành công',
-            thisPage: page,
-            limit: limit,
-            data: listTrips.rows,
-            totalItems: listTrips.count,
+
+        clientRedis.get(`list-trip-${page}-${status}`, async (err, reply) => {
+
+            console.log('reply', reply)
+
+            if (err) {
+                const listTrips = await Trips.findAndCountAll(optionQueryDB);
+                req.log_type = `${LOG_TYPE.INFO}`
+                res.status(STATUS.STATUS_200).send({
+                    message: 'Lấy thành công',
+                    thisPage: page,
+                    limit: limit,
+                    data: listTrips.rows,
+                    totalItems: listTrips.count,
+                })
+            } else {
+                if (!reply) {
+                    const listTrips = await Trips.findAndCountAll(optionQueryDB);
+                    req.log_type = `${LOG_TYPE.INFO}`
+                    res.status(STATUS.STATUS_200).send({
+                        message: 'Lấy thành công',
+                        thisPage: page,
+                        limit: limit,
+                        data: listTrips.rows,
+                        totalItems: listTrips.count,
+                    })
+
+                    await clientRedis.set(`list-trip-${page}-${status} `, JSON.stringify(listTrips), 'EX', 300, (err) => {
+                        if (err) return res.status(STATUS.STATUS_500).send({
+                            message: "Lỗi sơ vơ"
+                        })
+                    })
+
+                } else {
+                    const listTrips = JSON.parse(reply)
+                    console.log(listTrips)
+                }
+
+
+            }
         })
+
+
     } catch (e) {
         req.log_type = `${LOG_TYPE.ERROR}`
         res.status(STATUS.STATUS_500).send(e)

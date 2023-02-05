@@ -2,22 +2,39 @@ const jwt = require('jsonwebtoken')
 
 
 const authenticate = (req, res, next) => {
-    const accessToken = req.header("token");
+    const accessToken = req.header("AccessToken");
 
-    console.log('accessToken',accessToken)
-    if (accessToken) {
-        const decode = jwt.verify(accessToken, '12345678')
-        if (!decode) {
-            return res.status(401).send({
-                message: 'Bạn cần phải đăng nhập'
+    try {
+        if (accessToken) {
+            jwt.verify(accessToken, '12345678', (err, payload) => {
+                if (err) {
+                    if (err.name === 'JsonWebTokenError') {
+                        return res.status(401).send({
+                            message: 'JsonWebTokenError'
+                        })
+                    } else {
+                        return res.status(401).send({
+                            message: 'JWT hết hạn'
+                        })
+                    }
+
+
+                } else {
+                    req.user = payload
+                    return next();
+                }
+
+
             })
         } else {
-            req.user = decode
-            return next();
+            res.status(404).send({
+                message: 'Bạn chưa đăng nhập',
+            })
         }
-    } else {
-        res.status(404).send({
-            message: 'Ban chua dang nhap',
+
+    } catch (e) {
+        res.status(500).send({
+            message: 'Lỗi server',
         })
     }
 }

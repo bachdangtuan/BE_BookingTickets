@@ -14,7 +14,7 @@ const authenticate = (req, res, next) => {
                         })
                     } else {
                         return res.status(401).send({
-                            message: 'JWT hết hạn'
+                            message: 'JWT hết hạn, Unauthorized '
                         })
                     }
 

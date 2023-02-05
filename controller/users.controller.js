@@ -121,7 +121,7 @@ const getAllUser = async (req, res) => {
                 attributes: {exclude: ['createdAt', 'updatedAt', 'password']}
             }
         )
-        res.status(STATUS.STATUS_201).send(newUser)
+        res.status(STATUS.STATUS_200).send(newUser)
     } catch (err) {
         req.log_type = `${LOG_TYPE.ERROR}`
         await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramWarning(LOG_TYPE.ERROR, originalURL, STATUS.STATUS_500));

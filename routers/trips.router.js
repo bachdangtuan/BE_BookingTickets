@@ -5,7 +5,8 @@ const {
     uploadXLSXSaveStoreCloud,
     uploadSingleImageDiskStore
 } = require("../middleware/upload/upload");
-
+const {authorize} = require("../middleware/authenticate/authorize");
+const {authenticate} = require("../middleware/authenticate/authenticate");
 
 const TripsRouter = express.Router();
 

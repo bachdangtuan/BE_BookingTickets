@@ -9,6 +9,7 @@ const botTelegram = require('../core/constant/telegramAlert').module.botTelegram
 const GROUP_CHAT_ID = require('../core/constant/GroupIDTelegram')
 
 const {alertTelegramWarning, alertTelegramLoginFalse} = require('../core/function/alert').module
+const clientRedis = require('../service/connectRedis').module //connect redis
 
 // Hàm tạo user
 const createUser = async (req, res) => {
@@ -43,18 +44,28 @@ const loginUser = async (req, res) => {
         if (user) {
             const isAuth = bcrypt.compareSync(password, user.password)
             if (isAuth) {
-                const accessToken = jwt.sign({username: user.username, type: user.type}, "12345678", {
-                    expiresIn: 60 * 60
+                const accessToken = jwt.sign({username: user.username, id: user.id, type: user.type}, "12345678", {
+                    expiresIn: 10
                 });
                 // refresh Token
-                const refreshToken = jwt.sign({username: user.username, type: user.type}, "12345678", {
+                const refreshToken = jwt.sign({username: user.username, id: user.id, type: user.type}, "12345678", {
                     expiresIn: 600 * 600
                 });
-                res.status(STATUS.STATUS_200).send({
-                    user,
-                    accessToken,
-                    refreshToken,
-                    message: "Người dùng đăng nhập thành công !"
+                // set vào redis
+                clientRedis.set(user.id.toString(), refreshToken, 'EX', 365 * 24 * 60 * 60, (err) => {
+                    if (!err) {
+                        res.status(STATUS.STATUS_200).send({
+                            user,
+                            accessToken,
+                            refreshToken,
+                            message: "Người dùng đăng nhập thành công !"
+                        })
+                    } else {
+                        return res.status(STATUS.STATUS_500).send({
+                            message: "Lỗi sơ vơ"
+                        })
+                    }
+
                 })
             } else {
                 await botTelegram.sendMessage(GROUP_CHAT_ID, alertTelegramLoginFalse(LOG_TYPE.WARNING, originalURL, STATUS.STATUS_400));
@@ -250,6 +261,62 @@ const resetPassword = async (req, res) => {
 }
 
 
+// Hàm logout
+const logout = async (req, res) => {
+    try {
+        const refreshToken = req.header("refreshToken");
+        if (refreshToken) {
+            jwt.verify(refreshToken, '12345678', (err, payload) => {
+                // trường hợp lỗi
+                if (err) {
+                    return res.status(404).send({
+                        message: 'err'
+                    })
+                } else {
+
+                    // nếu không lỗi kiểm tra tồn tại của refreshToken trên redis không
+                    clientRedis.get(payload.id, (err, reply) => {
+                        // trường hợp lỗi
+                        if (err) {
+                            res.status(500).send({
+                                message: 'Lỗi server',
+                            })
+                        } else {
+                            if (reply === refreshToken) {
+                                const {id} = payload
+                                clientRedis.del(id.toString(), (err, reply) => {
+                                    if (err) {
+                                        res.status(STATUS.STATUS_500).send({
+                                            message: 'Lỗi server'
+                                        })
+                                    } else {
+                                        res.status(STATUS.STATUS_200).send({
+                                            message: 'Logout thành công, đã xóa refresh Token trong Redis'
+                                        })
+                                    }
+                                })
+                            } else {
+                                res.status(404).send({
+                                    message: 'Refesh Token không tồn tại hoặc hết hạn',
+                                })
+                            }
+                        }
+                    })
+                }
+            })
+
+        } else {
+            res.status(STATUS.STATUS_500).send({
+                message: 'Lỗi server'
+            })
+        }
+
+
+    } catch (e) {
+
+    }
+}
+
 module.exports = {
-    createUser, getAllUser, getUserDetail, loginUser, uploadAvatar, resetPassword
+    createUser, getAllUser, getUserDetail, loginUser, uploadAvatar, resetPassword, logout
 }

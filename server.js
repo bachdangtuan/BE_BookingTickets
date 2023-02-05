@@ -6,6 +6,7 @@ const app = express();
 const {rootRouter} = require('./routers')
 const expressIp = require('express-ip');
 const morgan = require("morgan");
+const clientRedis = require('./service/connectRedis').module //connect redis
 
 
 // logger service middleware
@@ -50,5 +51,17 @@ app.listen(5000, async () => {
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
-
 })
+
+// connect Redis Server
+clientRedis.ping((err, pong) => {
+    console.log('Kết nối redis thành công', pong)
+})
+clientRedis.on("error", function (error) {
+    console.error("error", error);
+});
+
+
+
+
+

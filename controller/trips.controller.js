@@ -65,9 +65,9 @@ const createTrip = async (req, res) => {
 const getAllTrip = async (req, res) => {
     try {
 
-        console.log(req.query.status)
-        console.log(req.query.limit)
-        console.log(req.query.page)
+        // console.log(req.query.status)
+        // console.log(req.query.limit)
+        // console.log(req.query.page)
 
 
         const status = parseInt(req.query.status)
